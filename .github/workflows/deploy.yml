@@ -17,13 +17,18 @@ jobs:
       - name: Configurar Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: 22
 
       - name: Instalar dependencias
         run: npm ci
 
       - name: Compilar Angular
         run: npx ng build --base-href=/glodu-portal-cec/
+
+      - name: Preparar index.html para GitHub Pages
+        run: |
+          cp dist/app/browser/index.csr.html dist/app/browser/index.html
+          cp dist/app/browser/index.csr.html dist/app/browser/404.html
 
       - name: Desplegar a GitHub Pages
         uses: JamesIves/github-pages-deploy-action@v4

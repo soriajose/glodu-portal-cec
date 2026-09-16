@@ -1,0 +1,331 @@
+<footer class="bg-[#0D1C3C] text-white pt-16 pb-24 md:pb-12 border-t border-[#1A3673]/30 mt-auto">
+  <div class="max-w-[1240px] mx-auto px-4 md:px-8">
+    
+    <!-- Main Footer Grid (4 Columns Estilo Udemy) -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10 mb-12">
+      
+      <!-- Col 1: Portal Académico Notarial -->
+      <div class="space-y-4">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-xl bg-[#1A3673] flex items-center justify-center text-white font-bold shadow-sm">
+            <span class="material-symbols-outlined text-2xl">school</span>
+          </div>
+          <div>
+            <span class="font-extrabold text-sm uppercase tracking-wider text-white block">
+              Portal Académico
+            </span>
+            <span class="text-[10px] text-slate-400 font-semibold uppercase tracking-wider">
+              Colegio de Escribanos de Córdoba
+            </span>
+          </div>
+        </div>
+
+        <p class="text-xs text-slate-300 leading-relaxed">
+          Plataforma de formación continua, dictámenes doctrinarios del SIDANO y especializaciones profesionales con certificación oficial de la institución notarial cordobesa.
+        </p>
+
+        <div class="flex items-center gap-2 pt-1">
+          <a routerLink="/aula-virtual" class="inline-flex items-center gap-1.5 text-xs font-bold text-[#EEF3FA] bg-[#1A3673] hover:bg-[#122856] px-3 py-1.5 rounded-lg transition-colors border border-white/10">
+            <span class="material-symbols-outlined text-sm">laptop_chromebook</span>
+            Aula Virtual CEC
+          </a>
+        </div>
+      </div>
+
+      <!-- Col 2: Pagos y Facturación -->
+      <div class="space-y-3">
+        <h4 class="font-bold text-xs uppercase tracking-wider text-[#EEF3FA] border-b border-white/10 pb-2">
+          Pagos y Facturación
+        </h4>
+        <ul class="space-y-2.5 text-xs text-slate-300">
+          <li>
+            <button
+              type="button"
+              (click)="openModal('pagos')"
+              class="hover:text-white transition-colors flex items-center gap-1.5 text-left cursor-pointer group"
+            >
+              <span class="material-symbols-outlined text-sm text-[#7A1C30] group-hover:translate-x-0.5 transition-transform">payments</span>
+              <span>Canales de pago SIRO</span>
+            </button>
+          </li>
+          <li>
+            <button
+              type="button"
+              (click)="openModal('pagos')"
+              class="hover:text-white transition-colors flex items-center gap-1.5 text-left cursor-pointer group"
+            >
+              <span class="material-symbols-outlined text-sm text-[#7A1C30] group-hover:translate-x-0.5 transition-transform">receipt_long</span>
+              <span>Facturación para Colegiados</span>
+            </button>
+          </li>
+          <li>
+            <button
+              type="button"
+              (click)="openModal('pagos')"
+              class="hover:text-white transition-colors flex items-center gap-1.5 text-left cursor-pointer group"
+            >
+              <span class="material-symbols-outlined text-sm text-[#7A1C30] group-hover:translate-x-0.5 transition-transform">help</span>
+              <span>Preguntas Frecuentes de Pagos</span>
+            </button>
+          </li>
+          <li>
+            <span class="text-[11px] text-slate-400 block pt-1">
+              Admite Tarjetas de Débito, Crédito, DEBIN y Transferencia Bancaria Directa.
+            </span>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Col 3: Certificados y Acreditaciones -->
+      <div class="space-y-3">
+        <h4 class="font-bold text-xs uppercase tracking-wider text-[#EEF3FA] border-b border-white/10 pb-2">
+          Certificados y Créditos
+        </h4>
+        <ul class="space-y-2.5 text-xs text-slate-300">
+          <li>
+            <button
+              type="button"
+              (click)="openModal('certificados')"
+              class="hover:text-white transition-colors flex items-center gap-1.5 text-left cursor-pointer group"
+            >
+              <span class="material-symbols-outlined text-sm text-[#7A1C30] group-hover:translate-x-0.5 transition-transform">qr_code_2</span>
+              <span>Validación de Diplomas con QR</span>
+            </button>
+          </li>
+          <li>
+            <button
+              type="button"
+              (click)="openModal('certificados')"
+              class="hover:text-white transition-colors flex items-center gap-1.5 text-left cursor-pointer group"
+            >
+              <span class="material-symbols-outlined text-sm text-[#7A1C30] group-hover:translate-x-0.5 transition-transform">history_edu</span>
+              <span>Horas Cátedra para Concursos</span>
+            </button>
+          </li>
+          <li>
+            <button
+              type="button"
+              (click)="openModal('certificados')"
+              class="hover:text-white transition-colors flex items-center gap-1.5 text-left cursor-pointer group"
+            >
+              <span class="material-symbols-outlined text-sm text-[#7A1C30] group-hover:translate-x-0.5 transition-transform">verified</span>
+              <span>Constancias Digitales de Asistencia</span>
+            </button>
+          </li>
+          <li>
+            <span class="text-[11px] text-slate-400 block pt-1">
+              Acreditación automática vinculada a la matrícula profesional del notario.
+            </span>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Col 4: Ayuda y Soporte al Alumno -->
+      <div class="space-y-3">
+        <h4 class="font-bold text-xs uppercase tracking-wider text-[#EEF3FA] border-b border-white/10 pb-2">
+          Ayuda y Soporte
+        </h4>
+        <div class="space-y-2 text-xs text-slate-300">
+          <p class="flex items-center gap-2">
+            <span class="material-symbols-outlined text-base text-[#7A1C30] shrink-0">mail</span>
+            <a href="mailto:capacitacion@escribanos.org.ar" class="hover:text-white underline font-medium">
+              capacitacion&#64;escribanos.org.ar
+            </a>
+          </p>
+          <p class="flex items-center gap-2">
+            <span class="material-symbols-outlined text-base text-[#7A1C30] shrink-0">phone</span>
+            <span>(0351) 421-5008 (Int. Capacitación)</span>
+          </p>
+          <p class="flex items-start gap-2 text-[11px] text-slate-400">
+            <span class="material-symbols-outlined text-base text-[#7A1C30] shrink-0">schedule</span>
+            <span>Atención de consultas académicas: Lunes a Viernes de 08:00 a 16:00 hs.</span>
+          </p>
+
+          <div class="pt-2">
+            <button
+              type="button"
+              (click)="openModal('soporte')"
+              class="w-full py-2 px-3 bg-white/10 hover:bg-white/20 text-white rounded-xl text-xs font-semibold transition-colors flex items-center justify-center gap-1.5 cursor-pointer"
+            >
+              <span class="material-symbols-outlined text-sm">support_agent</span>
+              <span>Mesa de Ayuda al Cursante</span>
+            </button>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Bottom Legal Bar -->
+    <div class="pt-8 border-t border-white/10 flex flex-col md:flex-row items-center justify-between gap-4 text-xs text-slate-400">
+      <p>© 2026 Colegio de Escribanos de la Provincia de Córdoba. Portal Académico Notarial.</p>
+      <div class="flex items-center gap-4">
+        <button
+          type="button"
+          (click)="openModal('privacidad')"
+          class="hover:text-white transition-colors cursor-pointer"
+        >
+          Política de Privacidad
+        </button>
+        <span>•</span>
+        <button
+          type="button"
+          (click)="openModal('terminos')"
+          class="hover:text-white transition-colors cursor-pointer"
+        >
+          Términos de Uso Académico
+        </button>
+        <span>•</span>
+        <a
+          routerLink="/aula-virtual"
+          class="hover:text-white transition-colors cursor-pointer"
+        >
+          Aula Virtual
+        </a>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Interactive Information & FAQ Modal -->
+  @if (activeModal(); as modal) {
+    <div
+      role="dialog"
+      aria-modal="true"
+      tabindex="0"
+      (keyup.escape)="closeModal()"
+      class="fixed inset-0 z-[9999] bg-black/80 backdrop-blur-xs flex items-center justify-center p-4 text-[#0D1C3C]"
+    >
+      <button
+        type="button"
+        class="fixed inset-0 w-full h-full bg-transparent border-0 p-0 cursor-default"
+        (click)="closeModal()"
+        aria-label="Cerrar modal"
+      ></button>
+
+      <div class="relative z-10 bg-white rounded-2xl shadow-2xl max-w-lg w-full p-6 md:p-8 border border-slate-200 max-h-[85vh] overflow-y-auto">
+        
+        <!-- Modal Content By Type -->
+        @if (modal === 'pagos') {
+          <div class="flex items-center justify-between mb-4 border-b border-slate-100 pb-3">
+            <div class="flex items-center gap-2">
+              <span class="material-symbols-outlined text-[#7A1C30] text-2xl">payments</span>
+              <h3 class="font-extrabold text-lg text-[#0D1C3C]">Pagos y Facturación Académica</h3>
+            </div>
+            <button type="button" (click)="closeModal()" class="text-slate-400 hover:text-slate-700 p-1">
+              <span class="material-symbols-outlined">close</span>
+            </button>
+          </div>
+
+          <div class="space-y-3 text-xs text-slate-600 leading-relaxed mb-6">
+            <div class="p-3 bg-slate-50 rounded-xl border border-slate-200">
+              <h4 class="font-bold text-[#0D1C3C] mb-1">¿Cómo abono un curso arancelado?</h4>
+              <p>Los pagos se procesan a través de la pasarela segura SIRO del Banco Roela. Podés abonar con tarjeta de crédito en cuotas, tarjeta de débito, DEBIN bancario inmediato o cupón de pago en ventanilla.</p>
+            </div>
+            <div class="p-3 bg-slate-50 rounded-xl border border-slate-200">
+              <h4 class="font-bold text-[#0D1C3C] mb-1">Aranceles Preferenciales para Colegiados</h4>
+              <p>Los escribanos matriculados al día gozan de una bonificación directa de hasta el 40% en cursos, talleres y diplomaturas del Colegio.</p>
+            </div>
+            <div class="p-3 bg-slate-50 rounded-xl border border-slate-200">
+              <h4 class="font-bold text-[#0D1C3C] mb-1">Emisión de Comprobantes</h4>
+              <p>La factura electrónica (Factura A o B) se emite automáticamente con el CUIT notarial ingresado durante la preinscripción y se envía por correo dentro de las 48 hs hábiles.</p>
+            </div>
+          </div>
+        }
+
+        @if (modal === 'certificados') {
+          <div class="flex items-center justify-between mb-4 border-b border-slate-100 pb-3">
+            <div class="flex items-center gap-2">
+              <span class="material-symbols-outlined text-[#7A1C30] text-2xl">verified</span>
+              <h3 class="font-extrabold text-lg text-[#0D1C3C]">Certificados y Acreditación de Horas</h3>
+            </div>
+            <button type="button" (click)="closeModal()" class="text-slate-400 hover:text-slate-700 p-1">
+              <span class="material-symbols-outlined">close</span>
+            </button>
+          </div>
+
+          <div class="space-y-3 text-xs text-slate-600 leading-relaxed mb-6">
+            <div class="p-3 bg-slate-50 rounded-xl border border-slate-200">
+              <h4 class="font-bold text-[#0D1C3C] mb-1">Validación Criptográfica con QR</h4>
+              <p>Cada certificado emitido por el Portal Académico cuenta con un hash único y código QR que permite a juzgados, colegios y reparticiones públicas verificar la autenticidad al instante.</p>
+            </div>
+            <div class="p-3 bg-slate-50 rounded-xl border border-slate-200">
+              <h4 class="font-bold text-[#0D1C3C] mb-1">Cómputo para Concursos Notariales</h4>
+              <p>Las horas cátedra de diplomaturas y posgrados avalados por el Colegio acreditan antecedentes académicos según el Reglamento de Concursos para la provisión de Registros Notariales de Córdoba.</p>
+            </div>
+            <div class="p-3 bg-slate-50 rounded-xl border border-slate-200">
+              <h4 class="font-bold text-[#0D1C3C] mb-1">¿Dónde descargo mis certificados?</h4>
+              <p>Al aprobar los módulos y evaluaciones en el Aula Virtual, el diploma se habilita inmediatamente en tu panel de alumno en formato PDF firmado digitalmente.</p>
+            </div>
+          </div>
+        }
+
+        @if (modal === 'soporte') {
+          <div class="flex items-center justify-between mb-4 border-b border-slate-100 pb-3">
+            <div class="flex items-center gap-2">
+              <span class="material-symbols-outlined text-[#7A1C30] text-2xl">support_agent</span>
+              <h3 class="font-extrabold text-lg text-[#0D1C3C]">Mesa de Ayuda al Cursante</h3>
+            </div>
+            <button type="button" (click)="closeModal()" class="text-slate-400 hover:text-slate-700 p-1">
+              <span class="material-symbols-outlined">close</span>
+            </button>
+          </div>
+
+          <div class="space-y-3 text-xs text-slate-600 leading-relaxed mb-6">
+            <p>
+              Si tenés inconvenientes para ingresar al Aula Virtual, consultar el material o visualizar las grabaciones sincrónicas, podés canalizar tu consulta por cualquiera de las siguientes vías:
+            </p>
+            <div class="p-3 bg-slate-50 rounded-xl border border-slate-200 space-y-1">
+              <div class="font-bold text-[#0D1C3C]">Correo Electrónico de Capacitación:</div>
+              <a href="mailto:capacitacion@escribanos.org.ar" class="text-[#1A3673] underline font-semibold">capacitacion&#64;escribanos.org.ar</a>
+            </div>
+            <div class="p-3 bg-slate-50 rounded-xl border border-slate-200 space-y-1">
+              <div class="font-bold text-[#0D1C3C]">Soporte Técnico de Plataforma LMS:</div>
+              <a href="mailto:soporte@virtualcec.glodu.tech" class="text-[#1A3673] underline font-semibold">soporte&#64;virtualcec.glodu.tech</a>
+            </div>
+            <p class="text-[11px] text-slate-500">
+              Tiempo estimado de respuesta técnica: menos de 24 horas hábiles.
+            </p>
+          </div>
+        }
+
+        @if (modal === 'privacidad') {
+          <div class="flex items-center justify-between mb-4 border-b border-slate-100 pb-3">
+            <h3 class="font-extrabold text-lg text-[#0D1C3C]">Política de Privacidad y Datos</h3>
+            <button type="button" (click)="closeModal()" class="text-slate-400 hover:text-slate-700 p-1">
+              <span class="material-symbols-outlined">close</span>
+            </button>
+          </div>
+          <div class="text-xs text-slate-600 space-y-2 mb-6 leading-relaxed">
+            <p>El Colegio de Escribanos de la Provincia de Córdoba resguarda con estricta confidencialidad los datos personales de los colegiados y alumnos cursantes de conformidad con la Ley Nacional 25.326 de Protección de Datos Personales.</p>
+            <p>Los datos registrados se emplean exclusivamente con fines de gestión pedagógica, emisión de certificados y facturación impositiva.</p>
+          </div>
+        }
+
+        @if (modal === 'terminos') {
+          <div class="flex items-center justify-between mb-4 border-b border-slate-100 pb-3">
+            <h3 class="font-extrabold text-lg text-[#0D1C3C]">Términos de Uso Académico</h3>
+            <button type="button" (click)="closeModal()" class="text-slate-400 hover:text-slate-700 p-1">
+              <span class="material-symbols-outlined">close</span>
+            </button>
+          </div>
+          <div class="text-xs text-slate-600 space-y-2 mb-6 leading-relaxed">
+            <p>Los materiales doctrinarios, modelos escriturarios y grabaciones audiovisuales suministrados en este Portal y en el Aula Virtual son para uso académico exclusivo del cursante inscripto.</p>
+            <p>Queda prohibida su reproducción, retransmisión o comercialización no autorizada por las autoridades del Colegio de Escribanos de Córdoba.</p>
+          </div>
+        }
+
+        <div class="flex justify-end pt-3 border-t border-slate-100">
+          <button
+            type="button"
+            (click)="closeModal()"
+            class="px-5 py-2.5 bg-[#1A3673] hover:bg-[#122856] text-white text-xs font-bold rounded-xl transition-colors"
+          >
+            Cerrar
+          </button>
+        </div>
+
+      </div>
+    </div>
+  }
+</footer>

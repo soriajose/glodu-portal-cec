@@ -1,0 +1,244 @@
+<section class="py-12 bg-white border-y border-[#CBD5E1]/60">
+  <div class="max-w-[1280px] mx-auto px-4 md:px-8">
+    
+    <!-- Section Header -->
+    <div class="flex flex-col sm:flex-row sm:items-end justify-between mb-8 gap-4">
+      <div>
+        <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#FDF2F4] border border-[#F3CCD3] text-[#7A1C30] text-xs font-extrabold uppercase tracking-wider mb-2">
+          <span class="material-symbols-outlined text-sm">video_library</span>
+          <span>Actualización Notarial</span>
+        </div>
+        <h2 class="text-2xl md:text-3xl font-extrabold text-[#1A3673] tracking-tight">
+          FORMACIÓN CONTINUA
+        </h2>
+        <p class="text-xs md:text-sm text-[#4A5568] mt-1">
+          10 disertaciones y micro-reels destacados con juristas y especialistas notariales.
+        </p>
+      </div>
+
+      <!-- Quick Link to Full Catalog -->
+      <a
+        routerLink="/formacion-continua"
+        class="hidden sm:inline-flex items-center gap-1.5 text-xs md:text-sm font-bold text-[#7A1C30] hover:text-[#5C1222] transition-colors group px-3 py-2 rounded-xl hover:bg-[#FDF2F4]"
+      >
+        <span>Ver videoteca completa</span>
+        <span class="material-symbols-outlined text-base group-hover:translate-x-1 transition-transform">
+          arrow_forward
+        </span>
+      </a>
+    </div>
+
+    <!-- Slider Container -->
+    <div class="relative group/slider">
+      
+      <!-- Floating Left Arrow (Desktop) -->
+      <button
+        type="button"
+        (click)="scrollLeft(sliderContainer)"
+        class="hidden md:flex absolute -left-3 top-1/2 -translate-y-1/2 z-20 w-10 h-10 rounded-full bg-white/95 hover:bg-[#1A3673] text-[#1A3673] hover:text-white shadow-xl items-center justify-center transition-all cursor-pointer border border-[#CBD5E1] opacity-90 hover:opacity-100 hover:scale-105"
+        aria-label="Desplazar a la izquierda"
+      >
+        <span class="material-symbols-outlined text-2xl">chevron_left</span>
+      </button>
+
+      <!-- Floating Right Arrow (Desktop) -->
+      <button
+        type="button"
+        (click)="scrollRight(sliderContainer)"
+        class="hidden md:flex absolute -right-3 top-1/2 -translate-y-1/2 z-20 w-10 h-10 rounded-full bg-white/95 hover:bg-[#7A1C30] text-[#7A1C30] hover:text-white shadow-xl items-center justify-center transition-all cursor-pointer border border-[#CBD5E1] opacity-90 hover:opacity-100 hover:scale-105"
+        aria-label="Desplazar a la derecha"
+      >
+        <span class="material-symbols-outlined text-2xl">chevron_right</span>
+      </button>
+
+      <div
+        #sliderContainer
+        class="flex items-stretch gap-4 overflow-x-auto pb-6 pt-2 hide-scrollbar scroll-smooth snap-x snap-mandatory"
+      >
+        <!-- Featured Reel Stories (adapted to universal card) -->
+        @for (reel of portalService.reels(); track reel.id) {
+          <article
+            class="bg-white rounded-2xl overflow-hidden border border-slate-200 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 flex flex-col group w-[280px] sm:w-[320px] shrink-0 snap-start text-left"
+            [attr.aria-label]="'Video de ' + reel.title"
+          >
+            <!-- Image Container (Opens Modal) -->
+            <div 
+              role="button"
+              tabindex="0"
+              (click)="onOpenReel(reel)"
+              (keydown.enter)="onOpenReel(reel)"
+              class="relative aspect-video overflow-hidden bg-slate-900 cursor-pointer"
+            >
+              <img
+                [src]="reel.thumbnailUrl"
+                [alt]="reel.title"
+                class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 opacity-90"
+                loading="lazy"
+              />
+              <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent pointer-events-none"></div>
+
+              <!-- Top Badge -->
+              <div class="absolute top-3 left-3 bg-[#7A1C30] text-white text-[10px] font-black uppercase px-2.5 py-1 rounded-md shadow-md tracking-wider pointer-events-none">
+                {{ reel.category }}
+              </div>
+
+              <!-- Bottom Tag -->
+              <div class="absolute bottom-2 left-3 text-white text-[11px] font-bold uppercase tracking-wider bg-black/40 backdrop-blur-xs px-2 py-0.5 rounded flex items-center gap-1 pointer-events-none">
+                <span class="material-symbols-outlined text-xs">schedule</span>
+                {{ reel.duration }}
+              </div>
+
+              <!-- Play Center Button -->
+              <div class="absolute inset-0 flex items-center justify-center pointer-events-none">
+                <div class="w-12 h-12 rounded-full bg-[#7A1C30]/90 text-white flex items-center justify-center shadow-lg transform scale-90 group-hover:scale-110 transition-transform duration-300 border border-white/30">
+                  <span class="material-symbols-outlined text-3xl filled ml-0.5">play_arrow</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Content Body (Navigates to Detail) -->
+            <div class="p-5 flex flex-col flex-grow justify-between">
+              <div>
+                <a [routerLink]="['/video', reel.id]" class="block cursor-pointer">
+                  <h3 class="font-bold text-[#0D1C3C] text-base line-clamp-2 leading-snug group-hover:text-[#1A3673] transition-colors mb-2">
+                    {{ reel.title }}
+                  </h3>
+                </a>
+                <p class="text-xs text-slate-500 flex items-center gap-1.5 mb-2.5">
+                  <span class="material-symbols-outlined text-sm text-[#1A3673]">person</span>
+                  <span class="truncate">{{ reel.author }}</span>
+                </p>
+                <p class="text-xs text-slate-500 line-clamp-2 leading-relaxed">
+                  {{ reel.description }}
+                </p>
+              </div>
+
+              <div class="pt-4 mt-2 border-t border-slate-100">
+                <a [routerLink]="['/video', reel.id]" class="w-full py-2.5 px-3 rounded-xl text-xs font-bold text-[#1A3673] bg-[#EEF3FA] hover:bg-[#1A3673] hover:text-white border border-[#1A3673]/20 hover:border-[#1A3673] transition-all duration-200 cursor-pointer flex items-center justify-center gap-1.5">
+                  <span class="material-symbols-outlined text-sm">visibility</span>
+                  <span>Ver detalles</span>
+                </a>
+              </div>
+            </div>
+          </article>
+        }
+
+        <!-- Final "VER MÁS" Card -->
+        <article class="bg-white rounded-2xl overflow-hidden border-2 border-dashed border-[#1A3673]/40 hover:border-[#7A1C30] bg-[#EEF3FA]/70 hover:bg-[#FDF2F4] shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 flex flex-col group w-[280px] sm:w-[320px] shrink-0 snap-start">
+          <a
+            routerLink="/formacion-continua"
+            class="w-full h-full p-5 flex flex-col justify-center items-center text-center cursor-pointer"
+          >
+            <div class="w-14 h-14 rounded-2xl bg-[#1A3673] group-hover:bg-[#7A1C30] text-white flex items-center justify-center transition-colors shadow-md mb-4">
+              <span class="material-symbols-outlined text-3xl group-hover:scale-110 transition-transform">
+                travel_explore
+              </span>
+            </div>
+            <span class="text-[11px] font-extrabold text-[#7A1C30] uppercase tracking-wider block mb-1">
+              Videoteca Notarial
+            </span>
+            <h3 class="text-lg font-extrabold text-[#1A3673] leading-snug group-hover:text-[#7A1C30] transition-colors mb-2">
+              VER MÁS VIDEOS
+            </h3>
+            <p class="text-xs text-[#4A5568] leading-relaxed">
+              Explora nuestro catálogo completo.
+            </p>
+          </a>
+        </article>
+
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- Full YouTube Video Modal (Triggered by Reel click) -->
+@if (selectedReel(); as reel) {
+  <div
+    role="dialog"
+    aria-modal="true"
+    tabindex="0"
+    (keyup.escape)="onCloseModal()"
+    class="fixed inset-0 z-[9999] bg-black/85 backdrop-blur-md flex items-center justify-center p-3 sm:p-6 text-white"
+  >
+    <button
+      type="button"
+      class="fixed inset-0 w-full h-full bg-transparent border-0 p-0 cursor-default"
+      (click)="onCloseModal()"
+      aria-label="Cerrar video"
+    ></button>
+
+    <div class="relative z-10 bg-[#0D1C3C] rounded-2xl shadow-2xl max-w-4xl w-full overflow-hidden border border-white/20 flex flex-col">
+      
+      <!-- Video Player Header -->
+      <div class="px-5 py-3.5 bg-[#1A3673] text-white flex justify-between items-center border-b border-white/10">
+        <div class="flex items-center gap-2.5 truncate mr-4">
+          <span class="inline-block w-2.5 h-2.5 rounded-full bg-[#7A1C30]"></span>
+          <span class="text-xs font-bold uppercase tracking-wider text-[#FDF2F4]">{{ reel.category }}</span>
+          <span class="text-white/40">|</span>
+          <h3 class="font-bold text-xs sm:text-sm truncate">{{ reel.title }}</h3>
+        </div>
+        <button
+          type="button"
+          (click)="onCloseModal()"
+          class="p-1.5 rounded-lg hover:bg-white/20 text-white/80 hover:text-white transition-colors cursor-pointer"
+          aria-label="Cerrar"
+        >
+          <span class="material-symbols-outlined text-xl">close</span>
+        </button>
+      </div>
+
+      <!-- Embedded YouTube Iframe Player -->
+      <div class="aspect-video w-full bg-black relative">
+        @if (activeSafeVideoUrl()) {
+          <iframe
+            [src]="activeSafeVideoUrl()"
+            class="w-full h-full"
+            [title]="reel.title"
+            frameborder="0"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allowfullscreen
+          ></iframe>
+        }
+      </div>
+
+      <!-- Video Meta Details & Speaker Information -->
+      <div class="p-5 sm:p-6 bg-[#0D1C3C] border-t border-white/10 flex flex-col md:flex-row md:items-center justify-between gap-4">
+        <div class="space-y-1">
+          <div class="flex flex-wrap items-center gap-2 text-xs text-white/70">
+            <span class="flex items-center gap-1 font-semibold text-white">
+              <span class="material-symbols-outlined text-sm text-[#7A1C30]">person</span>
+              {{ reel.author }}
+            </span>
+            <span>•</span>
+            <span class="flex items-center gap-1">
+              <span class="material-symbols-outlined text-sm">calendar_month</span>
+              {{ reel.date }}
+            </span>
+            <span>•</span>
+            <span class="flex items-center gap-1">
+              <span class="material-symbols-outlined text-sm">schedule</span>
+              {{ reel.duration }}
+            </span>
+          </div>
+
+          <p class="text-xs text-white/80 pt-1 leading-relaxed max-w-2xl">
+            {{ reel.description }}
+          </p>
+        </div>
+
+        <div class="flex items-center gap-3 shrink-0">
+          <a
+            routerLink="/formacion-continua"
+            (click)="onCloseModal()"
+            class="px-4 py-2 bg-white/10 hover:bg-[#7A1C30] text-white text-xs font-bold rounded-xl transition-colors flex items-center gap-1.5"
+          >
+            <span>Buscador de Videos</span>
+            <span class="material-symbols-outlined text-sm">search</span>
+          </a>
+        </div>
+      </div>
+
+    </div>
+  </div>
+}

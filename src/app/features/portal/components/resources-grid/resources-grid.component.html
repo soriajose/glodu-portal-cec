@@ -1,0 +1,207 @@
+<section class="py-16 max-w-[1200px] mx-auto px-4 md:px-10">
+      <div class="flex items-center justify-between mb-8">
+        <h2 class="text-2xl md:text-3xl font-bold text-[#2F4997] border-l-4 border-[#D4AF37] pl-4">
+          Recursos y Bibliotecas
+        </h2>
+        <span class="text-xs md:text-sm font-semibold text-[#4A5568]">
+          Consulta pública y notarial
+        </span>
+      </div>
+
+      <!-- Bento Grid -->
+      <div class="grid grid-cols-1 md:grid-cols-4 gap-6 auto-rows-[260px]">
+        
+        <!-- 1. Público en General (2 Cols, 1 Row) -->
+        <button
+          type="button"
+          (click)="openModal('publico')"
+          class="md:col-span-2 group relative rounded-2xl overflow-hidden shadow-sm border border-[#c5c6d3] hover:shadow-xl transition-all cursor-pointer text-left p-0 border-0"
+        >
+          <img
+            src="https://images.unsplash.com/photo-1450133064473-71024230f91b?q=80&w=800&auto=format&fit=crop"
+            alt="Público en General"
+            class="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+          />
+          <div class="absolute inset-0 bg-gradient-to-t from-black/85 via-black/30 to-transparent flex flex-col justify-end p-6">
+            <span class="text-[#D4AF37] text-xs font-bold uppercase tracking-wider mb-1">
+              Servicios a la Comunidad
+            </span>
+            <h3 class="text-white text-xl md:text-2xl font-bold mb-1">
+              Público en General
+            </h3>
+            <p class="text-white/80 text-xs md:text-sm font-normal">
+              Guías informativas para trámites y servicios ciudadanos.
+            </p>
+          </div>
+        </button>
+
+        <!-- 2. Manual de Ética (1 Col, 1 Row) -->
+        <button
+          type="button"
+          (click)="openModal('manual')"
+          class="md:col-span-1 bg-white p-6 border border-[#c5c6d3] rounded-2xl hover:bg-[#e8e8e8]/30 transition-colors flex flex-col justify-between group shadow-sm cursor-pointer text-left"
+        >
+          <div class="w-12 h-12 rounded-xl bg-[#dce1ff] flex items-center justify-center text-[#2F4997] group-hover:scale-110 transition-transform">
+            <span class="material-symbols-outlined text-2xl">gavel</span>
+          </div>
+          <div>
+            <h3 class="text-lg font-bold text-[#2F4997] mb-1">
+              Manual de Ética
+            </h3>
+            <p class="text-xs text-[#444651]">
+              Principios y valores del ejercicio notarial.
+            </p>
+          </div>
+          <div class="flex items-center justify-between text-xs font-semibold text-[#2F4997] w-full">
+            <span>Descargar PDF</span>
+            <span class="material-symbols-outlined text-[#757682] group-hover:text-[#2F4997]">download</span>
+          </div>
+        </button>
+
+        <!-- 3. Archivo de Protocolos (1 Col, 2 Rows) -->
+        <button
+          type="button"
+          (click)="openModal('archivo')"
+          class="md:col-span-1 md:row-span-2 group relative rounded-2xl overflow-hidden shadow-sm border border-[#c5c6d3] hover:shadow-xl transition-all cursor-pointer text-left p-0 border-0"
+        >
+          <img
+            src="https://images.unsplash.com/photo-1455390582262-044cdead277a?q=80&w=800&auto=format&fit=crop"
+            alt="Archivo de Protocolos"
+            class="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+          />
+          <div class="absolute inset-0 bg-gradient-to-t from-[#2F4997]/95 via-[#2F4997]/60 to-transparent flex flex-col justify-end p-6">
+            <div class="w-10 h-10 rounded-lg bg-white/20 backdrop-blur-md flex items-center justify-center text-white mb-3">
+              <span class="material-symbols-outlined text-xl">folder_special</span>
+            </div>
+            <h3 class="text-white text-xl font-bold mb-2">
+              Archivo de Protocolos
+            </h3>
+            <p class="text-white/80 text-xs md:text-sm">
+              Acceso digital a registros históricos y actas notariais de la Provincia.
+            </p>
+          </div>
+        </button>
+
+        <!-- 4. Biblioteca Notarial (2 Cols, 1 Row) -->
+        <button
+          type="button"
+          (click)="openModal('biblioteca')"
+          class="md:col-span-2 bg-[#2F4997] text-white p-6 md:p-8 rounded-2xl flex items-center justify-between group cursor-pointer shadow-sm relative overflow-hidden text-left border-0"
+        >
+          <img
+            src="https://images.unsplash.com/photo-1524995997946-a1c2e315a42f?q=80&w=1200&auto=format&fit=crop"
+            alt="Biblioteca Notarial"
+            class="absolute inset-0 w-full h-full object-cover opacity-25 mix-blend-overlay group-hover:scale-105 transition-transform duration-500"
+          />
+          <div class="relative z-10 max-w-[70%]">
+            <span class="text-[#D4AF37] text-xs font-bold uppercase tracking-wider mb-1 block">
+              Repositorio Jurídico
+            </span>
+            <h3 class="text-xl md:text-2xl font-bold mb-2">
+              Biblioteca Notarial
+            </h3>
+            <p class="text-white/80 text-xs md:text-sm">
+              El repositorio jurídico más completo de la provincia de Córdoba a su disposición.
+            </p>
+          </div>
+          <div class="relative z-10 w-16 h-16 md:w-20 md:h-20 rounded-full border border-white/20 flex items-center justify-center group-hover:bg-white group-hover:text-[#2F4997] transition-all duration-300 shrink-0">
+            <span class="material-symbols-outlined text-3xl md:text-4xl">menu_book</span>
+          </div>
+        </button>
+
+        <!-- 5. Listado de Notarios (1 Col, 1 Row) -->
+        <button
+          type="button"
+          (click)="openModal('notarios')"
+          class="md:col-span-1 bg-[#f9f9f9] border border-[#c5c6d3] p-6 rounded-2xl hover:border-[#D4AF37] transition-all shadow-sm cursor-pointer text-left flex flex-col justify-between group"
+        >
+          <div>
+            <span class="material-symbols-outlined text-[#D4AF37] text-3xl mb-3 block group-hover:scale-110 transition-transform">list_alt</span>
+            <h3 class="text-base font-bold text-[#1a1c1c] mb-1">
+              Listado de Notarios
+            </h3>
+            <p class="text-xs text-[#444651]">
+              Búsqueda por nombre o zona.
+            </p>
+          </div>
+          <div class="text-xs font-bold text-[#2F4997] flex items-center gap-1 mt-2">
+            <span>Buscar profesional</span>
+            <span class="material-symbols-outlined text-sm">search</span>
+          </div>
+        </button>
+
+      </div>
+
+      <!-- Resource Interactive Modal -->
+      @if (activeModal()) {
+        <div
+          role="dialog"
+          aria-modal="true"
+          tabindex="0"
+          (keyup.escape)="activeModal.set(null)"
+          class="fixed inset-0 z-50 bg-black/60 backdrop-blur-xs flex items-center justify-center p-4 text-[#1a1c1c]"
+        >
+          <button
+            type="button"
+            class="fixed inset-0 w-full h-full bg-transparent border-0 p-0 cursor-default"
+            (click)="activeModal.set(null)"
+            aria-label="Cerrar modal"
+          ></button>
+          <div class="relative z-10 bg-white rounded-2xl shadow-2xl max-w-lg w-full p-6 border border-[#c5c6d3]">
+            
+            <div class="flex items-center justify-between mb-4 border-b border-gray-100 pb-3">
+              <div class="flex items-center gap-2.5 text-[#2F4997]">
+                <span class="material-symbols-outlined text-2xl">{{ modalIcon() }}</span>
+                <h3 class="font-bold text-lg">{{ modalTitle() }}</h3>
+              </div>
+              <button type="button" (click)="activeModal.set(null)" class="text-gray-400 hover:text-gray-600 p-1">
+                <span class="material-symbols-outlined">close</span>
+              </button>
+            </div>
+
+            <div class="text-sm text-[#4A5568] space-y-4 mb-6">
+              <p>{{ modalDescription() }}</p>
+
+              @if (activeModal() === 'notarios') {
+                <div class="space-y-3 pt-2">
+                  <div>
+                    <label for="notario-search" class="block text-xs font-bold text-[#1a1c1c] mb-1">Nombre o Apellido</label>
+                    <input id="notario-search" type="text" placeholder="Nombre o Apellido del Escribano..." class="w-full px-3.5 py-2 text-sm border border-[#c5c6d3] rounded-xl" />
+                  </div>
+                  <div>
+                    <label for="notario-zone" class="block text-xs font-bold text-[#1a1c1c] mb-1">Zona</label>
+                    <select id="notario-zone" class="w-full px-3.5 py-2 text-sm border border-[#c5c6d3] rounded-xl bg-white">
+                      <option value="">Todas las zonas (Córdoba Capital, Río Cuarto, etc.)</option>
+                      <option value="capital">Córdoba Capital</option>
+                      <option value="rio-cuarto">Río Cuarto</option>
+                      <option value="villa-maria">Villa María</option>
+                    </select>
+                  </div>
+                </div>
+              }
+
+              @if (activeModal() === 'manual') {
+                <div class="p-4 bg-gray-50 border border-gray-200 rounded-xl flex items-center justify-between">
+                  <div>
+                    <p class="font-bold text-xs text-[#2F4997]">Manual_de_Etica_Notarial_Cordoba_2024.pdf</p>
+                    <p class="text-[11px] text-gray-500">Documento Oficial - 2.4 MB</p>
+                  </div>
+                  <span class="material-symbols-outlined text-[#2F4997]">picture_as_pdf</span>
+                </div>
+              }
+            </div>
+
+            <div class="flex justify-end gap-3">
+              <button type="button" (click)="activeModal.set(null)" class="px-4 py-2 border border-[#c5c6d3] text-[#4A5568] text-sm font-semibold rounded-xl hover:bg-gray-100">
+                Cerrar
+              </button>
+              <button type="button" (click)="onModalAction()" class="px-5 py-2 bg-[#2F4997] text-white text-sm font-semibold rounded-xl hover:bg-[#12317f] flex items-center gap-1.5">
+                <span>{{ modalButtonText() }}</span>
+                <span class="material-symbols-outlined text-sm">arrow_forward</span>
+              </button>
+            </div>
+
+          </div>
+        </div>
+      }
+    </section>

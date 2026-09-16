@@ -1,0 +1,353 @@
+<div class="min-h-screen flex flex-col bg-[#F8FAFC]">
+  <app-header />
+
+  <main class="flex-grow">
+    <!-- Hero Header -->
+    <section class="bg-gradient-to-r from-[#0D1C3C] via-[#122856] to-[#1A3673] text-white py-12 px-4 md:px-8 border-b border-white/10">
+      <div class="max-w-[1240px] mx-auto">
+        <!-- Breadcrumb -->
+        <nav class="flex items-center gap-2 text-xs text-white/70 mb-4">
+          <a routerLink="/portal" class="hover:text-white transition-colors flex items-center gap-1">
+            <span class="material-symbols-outlined text-sm">home</span>
+            Inicio
+          </a>
+          <span class="text-white/40">/</span>
+          <span class="text-white font-medium">Pastillas de SIDANO</span>
+        </nav>
+
+        <div class="max-w-3xl">
+          <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider bg-[#7A1C30] text-white mb-3 shadow-sm">
+            <span class="material-symbols-outlined text-sm">psychology</span>
+            Sistema de Información y Dictámenes Notariales
+          </div>
+          <h1 class="text-3xl md:text-4xl font-extrabold tracking-tight mb-3">
+            Pastillas Doctrinales de Consulta Rápida
+          </h1>
+          <p class="text-white/80 text-sm md:text-base leading-relaxed">
+            Cápsulas en video de 3 a 5 minutos elaboradas por juristas y miembros de las comisiones del Colegio de Escribanos de Córdoba. Respuestas concretas y doctrina aplicable a la labor cotidiana de la escribanía.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Filters Section (Fixed in place, not following scroll) -->
+    <section class="py-8 bg-white border-b border-slate-200">
+      <div class="max-w-[1240px] mx-auto px-4 md:px-8 space-y-4">
+        
+        <div class="flex flex-col md:flex-row gap-4 items-stretch md:items-center justify-between">
+          <!-- Search input -->
+          <div class="relative flex-grow max-w-xl">
+            <span class="material-symbols-outlined absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 text-xl">search</span>
+            <input
+              type="text"
+              [value]="portalService.sidanoSearchQuery()"
+              (input)="onSearch($event)"
+              placeholder="Buscar por materia, palabra clave, autor o artículo del CCCN..."
+              class="w-full pl-11 pr-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs md:text-sm focus:outline-none focus:border-[#1A3673] focus:bg-white text-[#0D1C3C] transition-all"
+            />
+            @if (portalService.sidanoSearchQuery()) {
+              <button
+                type="button"
+                (click)="portalService.setSidanoSearchQuery('')"
+                class="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600"
+              >
+                <span class="material-symbols-outlined text-base">cancel</span>
+              </button>
+            }
+          </div>
+
+          <!-- Year filter & Reset -->
+          <div class="flex items-center gap-3">
+            <div class="relative min-w-[140px]">
+              <select
+                [value]="portalService.filterSidanoYear()"
+                (change)="onSelectYear($event)"
+                class="w-full px-3 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs font-semibold text-slate-700 focus:outline-none focus:border-[#1A3673]"
+              >
+                <option value="todos">Todos los años</option>
+                @for (year of portalService.availableSidanoYears(); track year) {
+                  <option [value]="year">Año {{ year }}</option>
+                }
+              </select>
+            </div>
+
+            <button
+              type="button"
+              (click)="onReset()"
+              class="px-3 py-2.5 border border-slate-200 text-slate-600 hover:bg-slate-100 rounded-xl text-xs font-semibold transition-colors shrink-0 flex items-center gap-1.5"
+            >
+              <span class="material-symbols-outlined text-sm">restart_alt</span>
+              <span>Limpiar</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Category chips -->
+        <div class="flex items-center gap-2 overflow-x-auto pb-1 no-scrollbar text-xs">
+          <span class="text-slate-400 font-bold uppercase text-[10px] tracking-wider shrink-0 mr-1">
+            Categorías:
+          </span>
+          <button
+            type="button"
+            (click)="onSelectCategory('todos')"
+            [class.bg-[#1A3673]]="portalService.filterSidanoCategory() === 'todos'"
+            [class.text-white]="portalService.filterSidanoCategory() === 'todos'"
+            [class.bg-slate-100]="portalService.filterSidanoCategory() !== 'todos'"
+            [class.text-slate-700]="portalService.filterSidanoCategory() !== 'todos'"
+            class="px-3 py-1.5 rounded-lg font-semibold transition-colors shrink-0 cursor-pointer"
+          >
+            Todas
+          </button>
+          @for (cat of portalService.availableSidanoCategories(); track cat) {
+            <button
+              type="button"
+              (click)="onSelectCategory(cat)"
+              [class.bg-[#1A3673]]="portalService.filterSidanoCategory() === cat"
+              [class.text-white]="portalService.filterSidanoCategory() === cat"
+              [class.bg-slate-100]="portalService.filterSidanoCategory() !== cat"
+              [class.text-slate-700]="portalService.filterSidanoCategory() !== cat"
+              class="px-3 py-1.5 rounded-lg font-semibold transition-colors shrink-0 cursor-pointer hover:bg-slate-200"
+            >
+              {{ cat }}
+            </button>
+          }
+        </div>
+
+      </div>
+    </section>
+
+    <!-- Results Section -->
+    <section class="py-12 px-4 md:px-8">
+      <div class="max-w-[1240px] mx-auto">
+        
+        <div class="flex items-center justify-between mb-6">
+          <p class="text-xs md:text-sm text-slate-500 font-medium">
+            Mostrando <span class="font-bold text-[#0D1C3C]">{{ paginatedPills().length }}</span> de <span class="font-bold text-[#0D1C3C]">{{ portalService.filteredSidanoPills().length }}</span> pastillas doctrinales
+          </p>
+          @if (totalPages() > 1) {
+            <span class="text-xs font-semibold text-slate-400">
+              Página {{ currentPage() }} de {{ totalPages() }}
+            </span>
+          }
+        </div>
+
+        @if (portalService.filteredSidanoPills().length > 0) {
+          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            @for (pill of paginatedPills(); track pill.id) {
+              <div
+                class="bg-white rounded-2xl overflow-hidden border border-slate-200 hover:border-[#1A3673]/40 shadow-xs hover:shadow-lg transition-all duration-300 flex flex-col group text-left"
+              >
+                <!-- Video Thumbnail Container -->
+                <div 
+                  role="button"
+                  tabindex="0"
+                  (click)="onOpenPill(pill)"
+                  (keydown.enter)="onOpenPill(pill)"
+                  class="relative aspect-video overflow-hidden bg-slate-900 cursor-pointer"
+                >
+                  <img
+                    [src]="pill.thumbnailUrl"
+                    [alt]="pill.title"
+                    loading="lazy"
+                    class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 opacity-90"
+                  />
+                  <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent pointer-events-none"></div>
+
+                  <!-- Play Button Overlay -->
+                  <div class="absolute inset-0 flex items-center justify-center pointer-events-none">
+                    <div class="w-11 h-11 rounded-full bg-[#7A1C30]/90 text-white flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform">
+                      <span class="material-symbols-outlined text-2xl fill-1 ml-0.5">play_arrow</span>
+                    </div>
+                  </div>
+
+                  <!-- Duration Badge -->
+                  <div class="absolute bottom-2 right-2 bg-black/80 backdrop-blur-xs text-white text-[10px] font-bold px-2 py-0.5 rounded flex items-center gap-1 pointer-events-none">
+                    <span class="material-symbols-outlined text-xs">schedule</span>
+                    {{ pill.duration }}
+                  </div>
+
+                  <!-- Year Badge -->
+                  <div class="absolute top-2.5 left-2.5 bg-white/90 backdrop-blur-xs text-[#0D1C3C] text-[10px] font-black px-2 py-0.5 rounded shadow-xs pointer-events-none">
+                    {{ pill.year }}
+                  </div>
+                </div>
+
+                <!-- Content Body -->
+                <div class="p-5 flex flex-col flex-grow justify-between">
+                  <div>
+                    <span class="text-[10px] font-bold text-[#7A1C30] uppercase tracking-wider block mb-1.5">
+                      {{ pill.category }}
+                    </span>
+
+                    <a [routerLink]="['/video', pill.id]" class="block cursor-pointer">
+                      <h3 class="font-bold text-[#0D1C3C] text-sm line-clamp-2 leading-snug group-hover:text-[#1A3673] transition-colors mb-2">
+                        {{ pill.title }}
+                      </h3>
+                    </a>
+
+                    <p class="text-xs text-slate-500 line-clamp-2 mb-3 leading-relaxed">
+                      {{ pill.summary }}
+                    </p>
+                  </div>
+
+                  <div class="pt-3 border-t border-slate-100 flex items-center justify-between text-[11px] text-slate-500">
+                    <span class="font-medium truncate max-w-[170px] text-slate-700">{{ pill.speaker }}</span>
+                    <a [routerLink]="['/video', pill.id]" class="text-[#1A3673] font-bold flex items-center gap-0.5 hover:underline cursor-pointer">
+                      Ver detalles
+                      <span class="material-symbols-outlined text-xs">open_in_new</span>
+                    </a>
+                  </div>
+                </div>
+              </div>
+            }
+          </div>
+
+          <!-- Pagination Controls -->
+          @if (totalPages() > 1) {
+            <nav class="mt-10 flex flex-col sm:flex-row items-center justify-between gap-4 border-t border-slate-200 pt-6" aria-label="Paginación">
+              <p class="text-xs text-slate-500">
+                Página <span class="font-bold text-[#0D1C3C]">{{ currentPage() }}</span> de <span class="font-bold text-[#0D1C3C]">{{ totalPages() }}</span>
+              </p>
+
+              <div class="flex items-center gap-2">
+                <button
+                  type="button"
+                  (click)="prevPage()"
+                  [disabled]="currentPage() === 1"
+                  [class.opacity-40]="currentPage() === 1"
+                  [class.cursor-not-allowed]="currentPage() === 1"
+                  class="px-3 py-1.5 border border-slate-200 bg-white hover:bg-slate-50 text-slate-700 rounded-lg text-xs font-semibold transition-colors flex items-center gap-1 cursor-pointer"
+                >
+                  <span class="material-symbols-outlined text-sm">chevron_left</span>
+                  <span>Anterior</span>
+                </button>
+
+                <div class="flex items-center gap-1">
+                  @for (p of pagesArray(); track p) {
+                    <button
+                      type="button"
+                      (click)="goToPage(p)"
+                      [class.bg-[#1A3673]]="currentPage() === p"
+                      [class.text-white]="currentPage() === p"
+                      [class.bg-white]="currentPage() !== p"
+                      [class.text-slate-700]="currentPage() !== p"
+                      class="w-8 h-8 rounded-lg text-xs font-bold border border-slate-200 hover:bg-slate-100 transition-colors flex items-center justify-center cursor-pointer"
+                    >
+                      {{ p }}
+                    </button>
+                  }
+                </div>
+
+                <button
+                  type="button"
+                  (click)="nextPage()"
+                  [disabled]="currentPage() === totalPages()"
+                  [class.opacity-40]="currentPage() === totalPages()"
+                  [class.cursor-not-allowed]="currentPage() === totalPages()"
+                  class="px-3 py-1.5 border border-slate-200 bg-white hover:bg-slate-50 text-slate-700 rounded-lg text-xs font-semibold transition-colors flex items-center gap-1 cursor-pointer"
+                >
+                  <span>Siguiente</span>
+                  <span class="material-symbols-outlined text-sm">chevron_right</span>
+                </button>
+              </div>
+            </nav>
+          }
+        } @else {
+          <!-- Empty State -->
+          <div class="py-16 text-center max-w-md mx-auto">
+            <div class="w-16 h-16 rounded-full bg-slate-100 text-slate-400 flex items-center justify-center mx-auto mb-4">
+              <span class="material-symbols-outlined text-3xl">filter_alt_off</span>
+            </div>
+            <h3 class="text-base font-bold text-[#0D1C3C] mb-1">
+              No se encontraron pastillas con esos filtros
+            </h3>
+            <p class="text-xs text-slate-500 mb-4">
+              Probá ajustando los términos de búsqueda o seleccionando otra categoría temática.
+            </p>
+            <button
+              type="button"
+              (click)="onReset()"
+              class="px-4 py-2 bg-[#1A3673] text-white text-xs font-semibold rounded-xl hover:bg-[#122856] transition-colors"
+            >
+              Restablecer filtros
+            </button>
+          </div>
+        }
+
+      </div>
+    </section>
+  </main>
+
+  <!-- Video Modal -->
+  @if (selectedPill(); as p) {
+    <div
+      role="dialog"
+      aria-modal="true"
+      tabindex="0"
+      (keyup.escape)="onCloseModal()"
+      class="fixed inset-0 z-[9999] bg-black/80 backdrop-blur-sm flex items-center justify-center p-4"
+    >
+      <button
+        type="button"
+        class="fixed inset-0 w-full h-full bg-transparent border-0 p-0 cursor-default"
+        (click)="onCloseModal()"
+        aria-label="Cerrar modal"
+      ></button>
+
+      <div class="relative z-10 bg-slate-900 text-white rounded-2xl shadow-2xl max-w-3xl w-full overflow-hidden border border-slate-700">
+        
+        <div class="p-4 md:px-6 flex items-center justify-between bg-slate-950/80 border-b border-slate-800">
+          <div class="flex items-center gap-2">
+            <span class="text-[10px] font-black uppercase px-2 py-0.5 rounded bg-[#7A1C30] text-white">
+              {{ p.category }}
+            </span>
+            <span class="text-xs text-slate-400 font-medium">SIDANO · {{ p.year }}</span>
+          </div>
+          <button
+            type="button"
+            (click)="onCloseModal()"
+            class="text-slate-400 hover:text-white p-1 rounded-lg hover:bg-slate-800 transition-colors"
+            aria-label="Cerrar reproductor"
+          >
+            <span class="material-symbols-outlined text-2xl">close</span>
+          </button>
+        </div>
+
+        <div class="relative aspect-video bg-black">
+          @if (activeSafeVideoUrl()) {
+            <iframe
+              [src]="activeSafeVideoUrl()"
+              class="w-full h-full"
+              title="Reproductor SIDANO"
+              frameborder="0"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+              allowfullscreen
+            ></iframe>
+          }
+        </div>
+
+        <div class="p-5 md:p-6 bg-slate-900 space-y-2">
+          <h3 class="text-base md:text-lg font-bold text-white leading-snug">
+            {{ p.title }}
+          </h3>
+          <p class="text-xs text-slate-300 leading-relaxed">
+            {{ p.summary }}
+          </p>
+          <div class="flex flex-wrap items-center justify-between gap-2 pt-3 border-t border-slate-800 text-xs text-slate-400">
+            <div>
+              <span class="text-slate-500">Dictamen por:</span>
+              <span class="text-slate-200 font-semibold ml-1">{{ p.speaker }}</span>
+            </div>
+            <div class="flex items-center gap-1.5 text-slate-400">
+              <span class="material-symbols-outlined text-sm">schedule</span>
+              <span>Duración: {{ p.duration }}</span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  }
+
+  <app-footer />
+</div>

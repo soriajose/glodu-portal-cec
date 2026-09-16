@@ -1,0 +1,33 @@
+<div class="min-h-screen flex flex-col bg-[#f9f9f9]">
+      <!-- Header -->
+      <app-header />
+
+      <!-- Main Content -->
+      <main class="flex-grow w-full">
+        <!-- Hero Banner -->
+        <app-portal-hero [heroData]="portalService.hero()" />
+
+        <!-- Formación Continua (10 Historias / Reels & Buscador) -->
+        <app-continuous-training />
+
+        <!-- Cursos en Tendencia (Estilo Udemy) -->
+        <app-courses-section [courses]="portalService.filteredCourses()" />
+
+        <!-- Aula Virtual Destacada (Card hacia pantalla explicativa) -->
+        <app-virtual-classroom-card />
+
+        <!-- Pastillas de SIDANO (Cápsulas doctrinales breves) -->
+        <app-sidano-pills />
+
+        <!-- Desarrolla tus Nuevas Habilidades (Comisión de Nuevas Tecnologías) -->
+        @if (portalService.hasActiveTechCourses()) {
+          <app-tech-skills />
+        }
+      </main>
+
+      <!-- Footer -->
+      <app-footer />
+
+      <!-- Mobile Navigation -->
+      <app-mobile-nav />
+    </div>

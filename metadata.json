@@ -1,0 +1,6 @@
+{
+  "name": "Colegio de Escribanos - Portal de Contenidos y Eventos",
+  "description": "Portal de capacitación, biblioteca digital y gestión de eventos para el Colegio de Escribanos de Córdoba.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

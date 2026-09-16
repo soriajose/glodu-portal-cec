@@ -1,0 +1,75 @@
+<div class="min-h-screen flex flex-col bg-[#f9f9f9]">
+      <!-- Header -->
+      <app-header />
+
+      <!-- Main Content -->
+      <main class="flex-grow max-w-[1200px] mx-auto px-4 md:px-10 py-8 w-full">
+        
+        <!-- Breadcrumbs -->
+        <nav class="flex items-center gap-2 mb-6 text-xs text-[#4A5568]">
+          <a routerLink="/" class="hover:text-[#2F4997] transition-colors">Home</a>
+          <span class="material-symbols-outlined text-xs">chevron_right</span>
+          <a routerLink="/eventos" class="hover:text-[#2F4997] transition-colors">Eventos</a>
+          <span class="material-symbols-outlined text-xs">chevron_right</span>
+          <span class="font-bold text-[#2F4997] truncate">Jornadas Notariales</span>
+        </nav>
+
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 md:gap-10">
+          
+          <!-- Main Content Area (8 Cols) -->
+          <div class="lg:col-span-8 space-y-6">
+            
+            <!-- Main Header Info -->
+            <section class="space-y-3">
+              <h1 class="text-2xl sm:text-3xl md:text-4xl font-bold text-[#2F4997] leading-tight">
+                {{ eventData().title }}
+              </h1>
+
+              <div class="flex flex-wrap items-center gap-3 md:gap-5 text-xs sm:text-sm font-medium text-[#4A5568]">
+                <div class="flex items-center gap-1.5">
+                  <span class="material-symbols-outlined text-lg text-[#2F4997]">calendar_today</span>
+                  <span>{{ eventData().date }}</span>
+                </div>
+
+                <div class="flex items-center gap-1.5">
+                  <span class="material-symbols-outlined text-lg text-[#2F4997]">location_on</span>
+                  <span>{{ eventData().location }}</span>
+                </div>
+
+                <span class="bg-[#8df5e4] text-[#007165] font-bold px-3 py-1 rounded-full text-xs shadow-2xs">
+                  {{ eventData().badge }}
+                </span>
+              </div>
+            </section>
+
+            <!-- Multimedia Player -->
+            <app-event-multimedia
+              [thumbnailUrl]="eventData().thumbnailUrl"
+              [videoTitle]="eventData().videoTitle"
+              [videoUrl]="eventData().videoUrl"
+            />
+
+            <!-- Interactive Tabs (Detalles, Oradores, Material de Descarga) -->
+            <app-event-tabs
+              [detailsParagraphs]="eventData().details"
+              [speakers]="eventData().speakers"
+              [downloads]="eventData().downloads"
+            />
+
+          </div>
+
+          <!-- Sidebar Area (4 Cols) -->
+          <div class="lg:col-span-4">
+            <app-event-sidebar [relatedItems]="eventData().relatedContent" />
+          </div>
+
+        </div>
+
+      </main>
+
+      <!-- Footer -->
+      <app-footer />
+
+      <!-- Mobile Navigation -->
+      <app-mobile-nav />
+    </div>

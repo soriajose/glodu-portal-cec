@@ -1,0 +1,232 @@
+<div class="min-h-screen flex flex-col bg-[#F8FAFC]">
+  <app-header />
+
+  <main class="flex-grow max-w-[1240px] mx-auto px-4 md:px-8 py-8 w-full">
+    @if (course(); as c) {
+      <!-- Breadcrumbs -->
+      <nav class="flex items-center gap-2 mb-6 text-xs text-slate-500 font-medium">
+        <a routerLink="/" class="hover:text-[#1A3673] transition-colors">Inicio</a>
+        <span class="material-symbols-outlined text-sm">chevron_right</span>
+        <span class="text-slate-400">Cursos y Talleres</span>
+        <span class="material-symbols-outlined text-sm">chevron_right</span>
+        <span class="font-bold text-[#1A3673] truncate max-w-[200px] sm:max-w-md">{{ c.title }}</span>
+      </nav>
+
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+        <!-- Main Content (8 cols) -->
+        <div class="lg:col-span-8 space-y-8">
+          
+          <!-- Header info -->
+          <div class="space-y-4">
+            <div class="flex items-center gap-2">
+              <span class="text-[10px] font-black px-2.5 py-1 rounded-md uppercase tracking-wider bg-[#7A1C30] text-white shadow-sm">
+                {{ c.tag || 'CURSO' }}
+              </span>
+              @if (c.badgeText) {
+                <span class="text-[10px] font-black px-2.5 py-1 rounded-md uppercase tracking-wider bg-[#1A3673]/10 text-[#1A3673] border border-[#1A3673]/20">
+                  {{ c.badgeText }}
+                </span>
+              }
+            </div>
+            
+            <h1 class="text-2xl sm:text-3xl md:text-4xl font-extrabold text-[#0D1C3C] leading-tight tracking-tight">
+              {{ c.title }}
+            </h1>
+
+            <p class="text-sm md:text-base text-slate-600 leading-relaxed max-w-3xl">
+              {{ c.description }}
+            </p>
+
+            <div class="flex flex-wrap items-center gap-4 pt-2 text-xs sm:text-sm font-medium text-slate-600">
+              <div class="flex items-center gap-1.5 bg-white px-3 py-1.5 rounded-lg border border-slate-200 shadow-xs">
+                <span class="material-symbols-outlined text-[18px] text-[#1A3673]">schedule</span>
+                <span>{{ c.duration }}</span>
+              </div>
+              <div class="flex items-center gap-1.5 bg-white px-3 py-1.5 rounded-lg border border-slate-200 shadow-xs">
+                <span class="material-symbols-outlined text-[18px] text-[#1A3673]">laptop_chromebook</span>
+                <span>{{ c.modalities || c.modality }}</span>
+              </div>
+              <div class="flex items-center gap-1.5 bg-white px-3 py-1.5 rounded-lg border border-slate-200 shadow-xs">
+                <span class="material-symbols-outlined text-[18px] text-[#1A3673]">person</span>
+                <span class="font-bold">{{ c.instructor }}</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Hero Image -->
+          <div class="aspect-video w-full rounded-2xl overflow-hidden bg-slate-900 border border-slate-200 shadow-sm relative">
+            <img [src]="c.imageUrl" [alt]="c.title" class="w-full h-full object-cover opacity-90" />
+            <div class="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent"></div>
+          </div>
+
+          <!-- Tabs Section -->
+          <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
+            <div class="flex overflow-x-auto border-b border-slate-200 hide-scrollbar bg-slate-50">
+              <button 
+                (click)="setTab('programa')"
+                [class.border-[#7A1C30]]="activeTab() === 'programa'"
+                [class.text-[#7A1C30]]="activeTab() === 'programa'"
+                [class.bg-white]="activeTab() === 'programa'"
+                [class.text-slate-500]="activeTab() !== 'programa'"
+                class="px-6 py-4 text-sm font-bold border-b-2 border-transparent hover:text-[#7A1C30] transition-colors whitespace-nowrap"
+              >
+                Programa Analítico
+              </button>
+              <button 
+                (click)="setTab('docente')"
+                [class.border-[#7A1C30]]="activeTab() === 'docente'"
+                [class.text-[#7A1C30]]="activeTab() === 'docente'"
+                [class.bg-white]="activeTab() === 'docente'"
+                [class.text-slate-500]="activeTab() !== 'docente'"
+                class="px-6 py-4 text-sm font-bold border-b-2 border-transparent hover:text-[#7A1C30] transition-colors whitespace-nowrap"
+              >
+                Cuerpo Docente
+              </button>
+              <button 
+                (click)="setTab('requisitos')"
+                [class.border-[#7A1C30]]="activeTab() === 'requisitos'"
+                [class.text-[#7A1C30]]="activeTab() === 'requisitos'"
+                [class.bg-white]="activeTab() === 'requisitos'"
+                [class.text-slate-500]="activeTab() !== 'requisitos'"
+                class="px-6 py-4 text-sm font-bold border-b-2 border-transparent hover:text-[#7A1C30] transition-colors whitespace-nowrap"
+              >
+                Requisitos y Certificación
+              </button>
+            </div>
+
+            <div class="p-6 md:p-8 text-sm text-slate-700 leading-relaxed">
+              @if (activeTab() === 'programa') {
+                <div class="space-y-6">
+                  <h3 class="text-lg font-bold text-[#0D1C3C] border-b border-slate-100 pb-2">Contenidos del Curso</h3>
+                  <div class="space-y-4">
+                    <div class="bg-slate-50 p-4 rounded-xl border border-slate-100">
+                      <h4 class="font-bold text-[#1A3673] mb-2">Módulo 1: Introducción y Fundamentos</h4>
+                      <p class="text-xs text-slate-600">Revisión del marco normativo vigente, antecedentes jurisprudenciales y conceptos clave. Análisis de casos introductorios y debate guiado.</p>
+                    </div>
+                    <div class="bg-slate-50 p-4 rounded-xl border border-slate-100">
+                      <h4 class="font-bold text-[#1A3673] mb-2">Módulo 2: Casuística Notarial y Aplicación Práctica</h4>
+                      <p class="text-xs text-slate-600">Resolución de expedientes reales, redacción de escrituras modelo y simulación de comparecencias complejas. Uso de herramientas digitales registrales.</p>
+                    </div>
+                    <div class="bg-slate-50 p-4 rounded-xl border border-slate-100">
+                      <h4 class="font-bold text-[#1A3673] mb-2">Módulo 3: Taller de Cierre y Evaluación</h4>
+                      <p class="text-xs text-slate-600">Presentación de trabajo final, ronda de consultas con especialistas invitados y pautas para la registración exitosa.</p>
+                    </div>
+                  </div>
+                </div>
+              }
+              @if (activeTab() === 'docente') {
+                <div class="space-y-4">
+                  <div class="flex items-start gap-4">
+                    <div class="w-16 h-16 rounded-full bg-[#1A3673]/10 text-[#1A3673] flex items-center justify-center shrink-0 border border-[#1A3673]/20">
+                      <span class="material-symbols-outlined text-3xl">person</span>
+                    </div>
+                    <div>
+                      <h3 class="text-lg font-bold text-[#0D1C3C]">{{ c.instructor }}</h3>
+                      <p class="text-xs font-bold text-[#7A1C30] uppercase tracking-wider mb-2">Director del Programa</p>
+                      <p class="text-sm text-slate-600">Especialista de reconocida trayectoria en el ámbito notarial y registral. Miembro de comisiones asesoras del Colegio de Escribanos y docente universitario de posgrado.</p>
+                    </div>
+                  </div>
+                </div>
+              }
+              @if (activeTab() === 'requisitos') {
+                <div class="space-y-4">
+                  <h3 class="text-lg font-bold text-[#0D1C3C] border-b border-slate-100 pb-2">Información Importante</h3>
+                  <ul class="space-y-3">
+                    <li class="flex items-start gap-2">
+                      <span class="material-symbols-outlined text-emerald-600 text-lg shrink-0">check_circle</span>
+                      <span class="text-sm">Abierto a notarios colegiados, adscriptos y abogados con interés en la materia registral.</span>
+                    </li>
+                    <li class="flex items-start gap-2">
+                      <span class="material-symbols-outlined text-emerald-600 text-lg shrink-0">check_circle</span>
+                      <span class="text-sm">Aprobación mediante asistencia mínima del 80% a los encuentros sincrónicos y entrega de trabajo práctico.</span>
+                    </li>
+                    <li class="flex items-start gap-2">
+                      <span class="material-symbols-outlined text-emerald-600 text-lg shrink-0">workspace_premium</span>
+                      <span class="text-sm font-bold text-[#1A3673]">Se emite certificado oficial digital expedido por el Portal Académico Notarial.</span>
+                    </li>
+                  </ul>
+                </div>
+              }
+            </div>
+          </div>
+        </div>
+
+        <!-- Sidebar / Enrollment Card (4 cols) -->
+        <div class="lg:col-span-4 relative">
+          <div class="sticky top-28 bg-white rounded-2xl border border-slate-200 shadow-lg overflow-hidden flex flex-col">
+            
+            <div class="p-6 border-b border-slate-100 bg-slate-50/50">
+              @if (c.price) {
+                <div class="text-xs font-bold text-slate-500 uppercase tracking-wider mb-1">Inversión</div>
+                
+                @if (c.memberPrice) {
+                  <div class="text-3xl font-black text-[#7A1C30] mb-1">{{ c.memberPrice }}</div>
+                  <div class="text-xs font-semibold text-[#1A3673] bg-[#1A3673]/10 inline-block px-2 py-0.5 rounded">Arancel Exclusivo Colegiados</div>
+                  <div class="mt-4 text-sm text-slate-500">Público General: <span class="line-through">{{ c.price }}</span></div>
+                } @else {
+                  <div class="text-3xl font-black text-[#0D1C3C] mb-1">{{ c.price }}</div>
+                }
+              } @else {
+                <div class="text-xs font-bold text-emerald-600 uppercase tracking-wider mb-1">Costo</div>
+                <div class="text-3xl font-black text-emerald-700 mb-1">Sin Cargo</div>
+                <div class="text-xs font-semibold text-emerald-700 bg-emerald-50 border border-emerald-100 inline-block px-2 py-0.5 rounded">Exclusivo Matriculados</div>
+              }
+
+              @if (c.spotsAvailable) {
+                <div class="mt-4 p-3 bg-amber-50 border border-amber-100 rounded-xl flex items-center gap-2 text-amber-800 text-xs font-bold">
+                  <span class="material-symbols-outlined text-base">warning</span>
+                  <span>¡Quedan solo {{ c.spotsAvailable }} cupos disponibles!</span>
+                </div>
+              }
+            </div>
+
+            <div class="p-6 space-y-4 bg-white">
+              <a 
+                [routerLink]="['/inscripcion', c.id]"
+                class="w-full py-3.5 px-4 bg-[#7A1C30] hover:bg-[#5C1222] text-white text-sm font-bold rounded-xl shadow-md hover:shadow-lg transition-all flex items-center justify-center gap-2 text-center"
+              >
+                <span class="material-symbols-outlined text-[18px]">how_to_reg</span>
+                Inscribirme Ahora
+              </a>
+
+              <p class="text-[10px] text-center text-slate-500">
+                Al inscribirte aceptas los Términos y Condiciones del Portal Académico.
+              </p>
+            </div>
+
+            <div class="px-6 pb-6 pt-2 bg-slate-50/50 border-t border-slate-100">
+              <h4 class="text-xs font-bold text-[#0D1C3C] uppercase tracking-wider mb-3">Este curso incluye:</h4>
+              <ul class="space-y-2.5 text-xs text-slate-600">
+                <li class="flex items-center gap-2">
+                  <span class="material-symbols-outlined text-[#1A3673] text-[16px]">ondemand_video</span>
+                  <span>Acceso a clases grabadas</span>
+                </li>
+                <li class="flex items-center gap-2">
+                  <span class="material-symbols-outlined text-[#1A3673] text-[16px]">menu_book</span>
+                  <span>Material de lectura descargable</span>
+                </li>
+                <li class="flex items-center gap-2">
+                  <span class="material-symbols-outlined text-[#1A3673] text-[16px]">forum</span>
+                  <span>Foro de consultas al docente</span>
+                </li>
+                <li class="flex items-center gap-2">
+                  <span class="material-symbols-outlined text-[#1A3673] text-[16px]">military_tech</span>
+                  <span>Certificado digital con código QR</span>
+                </li>
+              </ul>
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+    } @else {
+      <div class="text-center py-20">
+        <h2 class="text-2xl font-bold text-[#0D1C3C]">Curso no encontrado</h2>
+        <a routerLink="/portal" class="text-[#1A3673] underline mt-4 inline-block">Volver al inicio</a>
+      </div>
+    }
+  </main>
+
+  <app-footer />
+</div>

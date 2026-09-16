@@ -1,0 +1,39 @@
+<div class="relative -mt-10 z-20 px-4 md:px-10 max-w-[1200px] mx-auto">
+      <!-- Search Input Box -->
+      <div class="max-w-3xl mx-auto">
+        <div class="bg-white shadow-xl rounded-full p-2 flex items-center border border-[#c5c6d3] focus-within:border-[#2F4997] focus-within:ring-2 focus-within:ring-[#2F4997]/20 transition-all">
+          <span class="material-symbols-outlined ml-4 text-[#757682] text-2xl">search</span>
+          <input
+            type="text"
+            [value]="searchQuery()"
+            (input)="onInputChange($event)"
+            placeholder="Buscar contenidos, videos o cursos..."
+            class="w-full border-none focus:outline-none focus:ring-0 bg-transparent text-sm md:text-base py-3.5 px-4 text-[#1a1c1c] font-medium"
+          />
+          <button
+            (click)="onSearchSubmit()"
+            class="bg-[#2F4997] hover:bg-[#12317f] text-white px-7 py-3.5 rounded-full text-xs font-bold uppercase tracking-wider transition-all hidden sm:flex items-center gap-2 cursor-pointer shrink-0"
+          >
+            Buscar
+          </button>
+        </div>
+      </div>
+
+      <!-- Category Filter Chips -->
+      <div class="pt-10 pb-6 max-w-[1200px] mx-auto text-center">
+        <div class="flex flex-wrap justify-center gap-3">
+          @for (cat of categories(); track cat.id) {
+            <button
+              (click)="onCategoryClick(cat.id)"
+              [class]="cat.active
+                ? 'bg-[#2F4997] text-white border-[#2F4997] shadow-md'
+                : 'bg-white text-[#444651] border-[#c5c6d3] hover:bg-gray-100 hover:text-[#2F4997]'"
+              class="px-5 py-2.5 rounded-full border text-xs md:text-sm font-semibold transition-all flex items-center gap-2 cursor-pointer active:scale-95"
+            >
+              <span class="material-symbols-outlined text-lg">{{ cat.icon }}</span>
+              {{ cat.name }}
+            </button>
+          }
+        </div>
+      </div>
+    </div>

@@ -1,0 +1,208 @@
+<div class="min-h-screen flex flex-col bg-[#F8FAFC]">
+  <app-header />
+
+  <main class="flex-grow max-w-[1240px] mx-auto px-4 md:px-8 py-8 w-full">
+    @if (video(); as v) {
+      <!-- Breadcrumbs -->
+      <nav class="flex items-center gap-2 mb-6 text-xs text-slate-500 font-medium">
+        <a routerLink="/" class="hover:text-[#1A3673] transition-colors">Inicio</a>
+        <span class="material-symbols-outlined text-sm">chevron_right</span>
+        <span class="text-slate-400">Videoteca</span>
+        <span class="material-symbols-outlined text-sm">chevron_right</span>
+        <span class="font-bold text-[#1A3673] truncate max-w-[200px] sm:max-w-md">{{ v.title }}</span>
+      </nav>
+
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+        
+        <!-- Main Content (8 cols) -->
+        <div class="lg:col-span-8 space-y-6">
+          
+          <!-- Embedded YouTube Iframe Player -->
+          <div class="aspect-video w-full rounded-2xl overflow-hidden bg-black shadow-lg border border-slate-200">
+            @if (activeSafeVideoUrl()) {
+              <iframe
+                [src]="activeSafeVideoUrl()"
+                class="w-full h-full"
+                [title]="v.title"
+                frameborder="0"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowfullscreen
+              ></iframe>
+            } @else {
+              <div class="w-full h-full flex flex-col items-center justify-center text-white/50">
+                <span class="material-symbols-outlined text-4xl mb-2">videocam_off</span>
+                <span>Video no disponible</span>
+              </div>
+            }
+          </div>
+
+          <!-- Video Meta Details -->
+          <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm space-y-4">
+            <h1 class="text-2xl sm:text-3xl font-bold text-[#0D1C3C] leading-tight">
+              {{ v.title }}
+            </h1>
+
+            <div class="flex flex-wrap items-center gap-4 text-xs font-medium text-slate-500">
+              <span class="bg-[#1A3673]/10 text-[#1A3673] px-2.5 py-1 rounded-md uppercase tracking-wider font-bold">
+                {{ v.category }}
+              </span>
+              <div class="flex items-center gap-1.5">
+                <span class="material-symbols-outlined text-base">person</span>
+                <span class="text-slate-700 font-bold">{{ v.author || v.speaker }}</span>
+              </div>
+              <div class="flex items-center gap-1.5">
+                <span class="material-symbols-outlined text-base">calendar_month</span>
+                <span>{{ v.date || v.year }}</span>
+              </div>
+              <div class="flex items-center gap-1.5">
+                <span class="material-symbols-outlined text-base">schedule</span>
+                <span>{{ v.duration }}</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Tabs Section -->
+          <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden mt-6">
+            <div class="flex overflow-x-auto border-b border-slate-200 hide-scrollbar bg-slate-50">
+              <button 
+                (click)="setTab('descripcion')"
+                [class.border-[#7A1C30]]="activeTab() === 'descripcion'"
+                [class.text-[#7A1C30]]="activeTab() === 'descripcion'"
+                [class.bg-white]="activeTab() === 'descripcion'"
+                [class.text-slate-500]="activeTab() !== 'descripcion'"
+                class="px-6 py-4 text-sm font-bold border-b-2 border-transparent hover:text-[#7A1C30] transition-colors whitespace-nowrap"
+              >
+                Descripción General
+              </button>
+              <button 
+                (click)="setTab('disertante')"
+                [class.border-[#7A1C30]]="activeTab() === 'disertante'"
+                [class.text-[#7A1C30]]="activeTab() === 'disertante'"
+                [class.bg-white]="activeTab() === 'disertante'"
+                [class.text-slate-500]="activeTab() !== 'disertante'"
+                class="px-6 py-4 text-sm font-bold border-b-2 border-transparent hover:text-[#7A1C30] transition-colors whitespace-nowrap"
+              >
+                Disertante
+              </button>
+              <button 
+                (click)="setTab('material')"
+                [class.border-[#7A1C30]]="activeTab() === 'material'"
+                [class.text-[#7A1C30]]="activeTab() === 'material'"
+                [class.bg-white]="activeTab() === 'material'"
+                [class.text-slate-500]="activeTab() !== 'material'"
+                class="px-6 py-4 text-sm font-bold border-b-2 border-transparent hover:text-[#7A1C30] transition-colors whitespace-nowrap"
+              >
+                Material Relacionado
+              </button>
+            </div>
+
+            <div class="p-6 md:p-8 text-sm text-slate-700 leading-relaxed">
+              @if (activeTab() === 'descripcion') {
+                <div class="space-y-4">
+                  <h3 class="text-lg font-bold text-[#0D1C3C]">Acerca de este contenido</h3>
+                  <p>{{ v.description || v.summary }}</p>
+                  <p class="text-xs text-slate-500 bg-slate-50 p-3 rounded-lg border border-slate-100">
+                    Este contenido forma parte de la Videoteca Oficial del Colegio de Escribanos de Córdoba. La reproducción total o parcial sin autorización está prohibida.
+                  </p>
+                </div>
+              }
+              @if (activeTab() === 'disertante') {
+                <div class="space-y-4">
+                  <div class="flex items-start gap-4">
+                    <div class="w-14 h-14 rounded-full bg-[#1A3673] text-white flex items-center justify-center shrink-0">
+                      <span class="material-symbols-outlined text-2xl">account_circle</span>
+                    </div>
+                    <div>
+                      <h3 class="text-lg font-bold text-[#0D1C3C]">{{ v.author || v.speaker }}</h3>
+                      <p class="text-sm text-slate-600 mt-1">
+                        Disertante invitado al portal académico. Abogado y Notario de la Provincia de Córdoba.
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              }
+              @if (activeTab() === 'material') {
+                <div class="space-y-4">
+                  <div class="flex items-center justify-between p-4 bg-slate-50 rounded-xl border border-slate-100">
+                    <div class="flex items-center gap-3">
+                      <div class="w-10 h-10 rounded-lg bg-[#7A1C30]/10 text-[#7A1C30] flex items-center justify-center">
+                        <span class="material-symbols-outlined">picture_as_pdf</span>
+                      </div>
+                      <div>
+                        <h4 class="font-bold text-[#0D1C3C] text-xs">Presentación Diapositivas</h4>
+                        <p class="text-[10px] text-slate-500">PDF Document - 2.4 MB</p>
+                      </div>
+                    </div>
+                    <button class="text-[#1A3673] hover:bg-[#1A3673]/10 p-2 rounded-lg transition-colors">
+                      <span class="material-symbols-outlined">download</span>
+                    </button>
+                  </div>
+                </div>
+              }
+            </div>
+          </div>
+        </div>
+
+        <!-- Sidebar / Related Videos (4 cols) -->
+        <div class="lg:col-span-4 space-y-4">
+          <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-5">
+            <h3 class="text-sm font-bold text-[#0D1C3C] uppercase tracking-wider mb-4 flex items-center gap-2">
+              <span class="material-symbols-outlined text-[#7A1C30]">video_library</span>
+              Videos Recomendados
+            </h3>
+            
+            <div class="space-y-4">
+              <!-- Mock related video 1 -->
+              <a class="flex gap-3 group cursor-pointer">
+                <div class="w-24 h-16 rounded-lg bg-slate-200 overflow-hidden shrink-0 relative">
+                  <img src="https://images.unsplash.com/photo-1589829545856-d10d557cf95f?q=80&w=200&auto=format&fit=crop" class="w-full h-full object-cover group-hover:scale-105 transition-transform" />
+                  <div class="absolute bottom-1 right-1 bg-black/80 text-white text-[9px] px-1 rounded">15:20</div>
+                </div>
+                <div class="flex flex-col justify-center">
+                  <h4 class="text-xs font-bold text-[#0D1C3C] line-clamp-2 group-hover:text-[#1A3673] transition-colors leading-tight">Claves de la reforma en derecho de familia</h4>
+                  <p class="text-[10px] text-slate-500 mt-1">Dra. M. Teresa Rossi</p>
+                </div>
+              </a>
+
+              <!-- Mock related video 2 -->
+              <a class="flex gap-3 group cursor-pointer">
+                <div class="w-24 h-16 rounded-lg bg-slate-200 overflow-hidden shrink-0 relative">
+                  <img src="https://images.unsplash.com/photo-1450133064473-71024230f91b?q=80&w=200&auto=format&fit=crop" class="w-full h-full object-cover group-hover:scale-105 transition-transform" />
+                  <div class="absolute bottom-1 right-1 bg-black/80 text-white text-[9px] px-1 rounded">08:45</div>
+                </div>
+                <div class="flex flex-col justify-center">
+                  <h4 class="text-xs font-bold text-[#0D1C3C] line-clamp-2 group-hover:text-[#1A3673] transition-colors leading-tight">Actas de constatación web: Paso a paso</h4>
+                  <p class="text-[10px] text-slate-500 mt-1">Comisión TIC</p>
+                </div>
+              </a>
+
+              <!-- Mock related video 3 -->
+              <a class="flex gap-3 group cursor-pointer">
+                <div class="w-24 h-16 rounded-lg bg-slate-200 overflow-hidden shrink-0 relative">
+                  <img src="https://images.unsplash.com/photo-1521791136064-7986c2920216?q=80&w=200&auto=format&fit=crop" class="w-full h-full object-cover group-hover:scale-105 transition-transform" />
+                  <div class="absolute bottom-1 right-1 bg-black/80 text-white text-[9px] px-1 rounded">55:10</div>
+                </div>
+                <div class="flex flex-col justify-center">
+                  <h4 class="text-xs font-bold text-[#0D1C3C] line-clamp-2 group-hover:text-[#1A3673] transition-colors leading-tight">Transmisión de Empresas Familiares</h4>
+                  <p class="text-[10px] text-slate-500 mt-1">Esc. Roberto Garzón</p>
+                </div>
+              </a>
+            </div>
+
+            <a routerLink="/formacion-continua" class="block text-center text-xs font-bold text-[#1A3673] bg-[#EEF3FA] hover:bg-[#1A3673] hover:text-white rounded-xl py-2.5 mt-5 transition-colors">
+              Ver toda la videoteca
+            </a>
+          </div>
+        </div>
+
+      </div>
+    } @else {
+      <div class="text-center py-20">
+        <h2 class="text-2xl font-bold text-[#0D1C3C]">Video no encontrado</h2>
+        <a routerLink="/portal" class="text-[#1A3673] underline mt-4 inline-block">Volver al inicio</a>
+      </div>
+    }
+  </main>
+
+  <app-footer />
+</div>

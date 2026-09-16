@@ -1,0 +1,52 @@
+<section class="relative min-h-[480px] md:min-h-[520px] flex items-center overflow-hidden rounded-3xl my-4 mx-4 md:mx-8 shadow-xl">
+  <!-- Background Image with Modern Gradient Overlay (Azul & Borravino) -->
+  <div class="absolute inset-0 z-0">
+    <img
+      [src]="heroData().imageUrl"
+      alt="Edificio Institucional Colegio de Escribanos"
+      class="w-full h-full object-cover object-center transform scale-105"
+      loading="eager"
+    />
+    <div class="absolute inset-0 bg-gradient-to-r from-[#0D1C3C]/95 via-[#1A3673]/90 to-[#1A3673]/60"></div>
+  </div>
+
+  <!-- Hero Content -->
+  <div class="relative z-10 max-w-[1280px] mx-auto px-6 md:px-12 py-16 w-full">
+    <div class="max-w-2xl">
+      
+      <!-- Academic Sello Badge -->
+      <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/10 backdrop-blur-md border border-white/20 text-[#FDF2F4] text-xs font-bold uppercase tracking-wider mb-6">
+        <span class="w-2 h-2 rounded-full bg-[#7A1C30]"></span>
+        <span>Colegio de Escribanos de la Provincia de Córdoba</span>
+      </div>
+
+      <!-- Main Title -->
+      <h1 class="text-3xl sm:text-4xl md:text-5xl font-extrabold text-white mb-6 leading-tight tracking-tight drop-shadow-sm">
+        {{ heroData().title }}
+      </h1>
+
+      <!-- Subtitle Description -->
+      <p class="text-base sm:text-lg text-white/90 mb-10 leading-relaxed font-normal max-w-xl">
+        {{ heroData().subtitle }}
+      </p>
+
+      <!-- Single Aligned CTA Button (Lleva al Aula Virtual) -->
+      <div>
+        <a
+          routerLink="/aula-virtual"
+          class="inline-flex items-center gap-3 bg-[#7A1C30] hover:bg-[#5C1222] text-white font-bold text-sm sm:text-base px-8 py-4 rounded-2xl shadow-xl hover:shadow-2xl hover:scale-[1.02] active:scale-95 transition-all cursor-pointer group border border-white/20"
+        >
+          <span class="material-symbols-outlined text-2xl group-hover:scale-110 transition-transform">
+            school
+          </span>
+          <span>Ingresar al Aula Virtual</span>
+          <span class="material-symbols-outlined text-lg group-hover:translate-x-1 transition-transform">
+            arrow_forward
+          </span>
+        </a>
+      </div>
+
+    </div>
+  </div>
+</section>
+

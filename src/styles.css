@@ -1,0 +1,113 @@
+@import "tailwindcss";
+
+@theme {
+  --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
+  
+  /* 80% Familia de Azules (Base, Fondos y Jerarquía Institucional) */
+  --color-institutional-navy: #1A3673;
+  --color-primary-navy: #122856;
+  --color-navy-dark: #0D1C3C;
+  --color-navy-light: #2A4D9B;
+  --color-navy-subtle: #EEF3FA;
+  --color-primary-fixed: #D9E4F5;
+  
+  /* 20% Color Borravino (Acento de Alta Jerarquía, Badges, CTAs y Acciones) */
+  --color-accent-wine: #7A1C30;
+  --color-wine-dark: #5C1222;
+  --color-wine-light: #942940;
+  --color-wine-surface: #FDF2F4;
+  --color-wine-border: #F3CCD3;
+  
+  /* Compatibilidad y acentos secundarios */
+  --color-prestige-gold: #C99A2C;
+  --color-slate-gray: #4A5568;
+  --color-paper-white: #FFFFFF;
+  --color-surface-bg: #F8FAFC;
+  --color-surface-container-low: #F1F5F9;
+  --color-surface-container-high: #E2E8F0;
+  --color-outline-variant: #CBD5E1;
+  --color-on-surface-variant: #475569;
+}
+
+.material-symbols-outlined {
+  font-family: 'Material Symbols Outlined';
+  font-weight: normal;
+  font-style: normal;
+  font-size: 24px;
+  line-height: 1;
+  letter-spacing: normal;
+  text-transform: none;
+  display: inline-block;
+  white-space: nowrap;
+  word-wrap: normal;
+  direction: ltr;
+  -webkit-font-smoothing: antialiased;
+  font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+}
+
+.material-symbols-outlined.filled {
+  font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+}
+
+.tab-active {
+  border-bottom: 2px solid var(--color-accent-wine);
+  color: var(--color-institutional-navy);
+  font-weight: 600;
+}
+
+.glass-card {
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+/* Badges & Utility tokens */
+.badge-wine {
+  background-color: var(--color-wine-surface);
+  color: var(--color-accent-wine);
+  border: 1px solid var(--color-wine-border);
+}
+
+.badge-navy {
+  background-color: var(--color-navy-subtle);
+  color: var(--color-institutional-navy);
+  border: 1px solid var(--color-outline-variant);
+}
+
+.btn-wine {
+  background-color: var(--color-accent-wine);
+  color: #FFFFFF;
+  transition: all 0.2s ease;
+}
+.btn-wine:hover {
+  background-color: var(--color-wine-dark);
+}
+
+.btn-navy {
+  background-color: var(--color-institutional-navy);
+  color: #FFFFFF;
+  transition: all 0.2s ease;
+}
+.btn-navy:hover {
+  background-color: var(--color-primary-navy);
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+::-webkit-scrollbar-track {
+  background: #f1f5f9;
+}
+::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-institutional-navy);
+}
+
+
+.hide-scrollbar::-webkit-scrollbar { display: none; }
+.hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }

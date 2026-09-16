@@ -1,0 +1,128 @@
+<aside class="space-y-8">
+      
+      <!-- 1. Contenidos relacionados -->
+      <section class="space-y-4">
+        <h3 class="text-xl font-bold text-[#2F4997] border-l-4 border-[#D4AF37] pl-3">
+          Contenidos relacionados
+        </h3>
+
+        @for (item of relatedItems(); track item.id) {
+          <button
+            type="button"
+            (click)="onRelatedClick(item)"
+            class="w-full bg-white rounded-2xl border border-[#c5c6d3] overflow-hidden hover:shadow-lg transition-all duration-300 group cursor-pointer text-left p-0"
+          >
+            <div class="h-36 bg-gray-100 overflow-hidden relative">
+              <img
+                [src]="item.imageUrl"
+                [alt]="item.title"
+                class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+              />
+              <div class="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent"></div>
+            </div>
+            
+            <div class="p-5">
+              <h4 class="font-bold text-sm md:text-base text-[#2F4997] mb-2 leading-snug group-hover:text-[#12317f]">
+                {{ item.title }}
+              </h4>
+              <p class="text-xs text-[#4A5568] mb-4 line-clamp-2 leading-relaxed">
+                {{ item.snippet }}
+              </p>
+              <div class="text-[#2F4997] font-extrabold text-xs flex items-center gap-1 group-hover:translate-x-1 transition-transform">
+                <span>VER MÁS</span>
+                <span class="material-symbols-outlined text-sm">arrow_forward</span>
+              </div>
+            </div>
+          </button>
+        }
+      </section>
+
+      <!-- 2. Certificación Digital CTA Box -->
+      <section class="bg-[#2F4997] p-6 md:p-8 rounded-2xl text-white relative overflow-hidden shadow-md">
+        <div class="absolute -right-10 -top-10 w-36 h-36 bg-white/10 rounded-full blur-2xl"></div>
+        <div class="relative z-10">
+          <span class="text-[#D4AF37] text-xs font-bold uppercase tracking-wider block mb-1">Formación Superior</span>
+          <h3 class="text-xl md:text-2xl font-bold mb-3 leading-snug">Certificación Digital</h3>
+          <p class="text-xs md:text-sm text-white/90 mb-6 leading-relaxed">
+            Inscríbase en la Certificación en Gestión Notarial Digital y lidere la transformación tecnológica.
+          </p>
+          <button
+            type="button"
+            (click)="openCertificationModal.set(true)"
+            class="w-full bg-[#D4AF37] hover:bg-white text-[#2F4997] font-bold text-xs md:text-sm py-3.5 px-4 rounded-xl transition-all flex items-center justify-center gap-2 cursor-pointer shadow-md active:scale-95"
+          >
+            <span>Saber más</span>
+            <span class="material-symbols-outlined text-lg">open_in_new</span>
+          </button>
+        </div>
+      </section>
+
+      <!-- 3. ¿Necesita ayuda? Box -->
+      <section class="bg-[#f3f3f3] p-6 rounded-2xl border border-[#c5c6d3]">
+        <h4 class="font-bold text-lg text-[#2F4997] mb-2">¿Necesita ayuda?</h4>
+        <p class="text-xs text-[#4A5568] mb-4 leading-relaxed">
+          Nuestro equipo de soporte está disponible para consultas sobre el evento.
+        </p>
+        <div class="space-y-3">
+          <a
+            href="tel:03517500858"
+            class="flex items-center gap-3 text-xs md:text-sm font-semibold text-[#1a1c1c] hover:text-[#2F4997] transition-colors"
+          >
+            <span class="material-symbols-outlined text-[#2F4997] text-xl">phone</span>
+            <span>(351) 750-0858</span>
+          </a>
+          <a
+            href="mailto:eventos@escribanos.org.ar"
+            class="flex items-center gap-3 text-xs md:text-sm font-semibold text-[#1a1c1c] hover:text-[#2F4997] transition-colors"
+          >
+            <span class="material-symbols-outlined text-[#2F4997] text-xl">mail</span>
+            <span>eventos@escribanos.org.ar</span>
+          </a>
+        </div>
+      </section>
+
+      <!-- Modal Certificación Digital -->
+      @if (openCertificationModal()) {
+        <div
+          role="dialog"
+          aria-modal="true"
+          tabindex="0"
+          (keyup.escape)="openCertificationModal.set(false)"
+          class="fixed inset-0 z-50 bg-black/60 backdrop-blur-xs flex items-center justify-center p-4 text-[#1a1c1c]"
+        >
+          <button
+            type="button"
+            class="fixed inset-0 w-full h-full bg-transparent border-0 p-0 cursor-default"
+            (click)="openCertificationModal.set(false)"
+            aria-label="Cerrar modal"
+          ></button>
+          <div class="relative z-10 bg-white rounded-2xl shadow-2xl max-w-md w-full p-6 border border-[#c5c6d3]">
+            <div class="flex items-center justify-between mb-4 border-b border-gray-100 pb-3">
+              <h3 class="font-bold text-lg text-[#2F4997]">Certificación en Gestión Notarial Digital</h3>
+              <button type="button" (click)="openCertificationModal.set(false)" class="text-gray-400 hover:text-gray-600">
+                <span class="material-symbols-outlined">close</span>
+              </button>
+            </div>
+            
+            <p class="text-xs text-[#4A5568] leading-relaxed mb-4">
+              Programa ejecutivo avalado por la Universidad Notarial Argentina y el Colegio de Escribanos de Córdoba. Módulos de firma digital, matriz digital, ciberseguridad y protocolo electrónico.
+            </p>
+
+            <div class="bg-gray-50 p-3 rounded-xl border border-gray-200 text-xs space-y-1 mb-6 text-[#1a1c1c]">
+              <p><strong>Inicio:</strong> 1° de Noviembre, 2024</p>
+              <p><strong>Modalidad:</strong> 100% Online con Clases Grabadas</p>
+              <p><strong>Carga Horaria:</strong> 60 Horas Acreditadas</p>
+            </div>
+
+            <div class="flex justify-end gap-3">
+              <button type="button" (click)="openCertificationModal.set(false)" class="px-4 py-2 border border-[#c5c6d3] text-[#4A5568] text-sm font-semibold rounded-xl hover:bg-gray-100">
+                Cerrar
+              </button>
+              <button type="button" (click)="onApplyCertification()" class="px-5 py-2 bg-[#2F4997] text-white text-sm font-semibold rounded-xl hover:bg-[#12317f]">
+                Solicitar Admisión
+              </button>
+            </div>
+          </div>
+        </div>
+      }
+    </aside>

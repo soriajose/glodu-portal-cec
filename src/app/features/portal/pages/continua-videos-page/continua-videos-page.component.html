@@ -1,0 +1,347 @@
+<div class="min-h-screen flex flex-col bg-[#F8FAFC]">
+  <app-header />
+
+  <main class="flex-grow">
+    <!-- Breadcrumbs & Header Banner -->
+    <section class="bg-[#1A3673] text-white py-12 px-4 md:px-8 border-b border-[#0D1C3C]">
+      <div class="max-w-[1280px] mx-auto">
+        <!-- Breadcrumb -->
+        <nav class="flex items-center gap-2 text-xs text-white/70 mb-4" aria-label="Breadcrumb">
+          <a routerLink="/portal" class="hover:text-white transition-colors">Inicio</a>
+          <span class="text-white/40">/</span>
+          <span class="text-white font-semibold">Formación Continua</span>
+          <span class="text-white/40">/</span>
+          <span class="text-[#FDF2F4]">Videoteca y Conferencias</span>
+        </nav>
+
+        <div class="flex flex-col md:flex-row md:items-end justify-between gap-4">
+          <div>
+            <div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#7A1C30] text-white text-xs font-bold uppercase tracking-wider mb-3">
+              <span class="material-symbols-outlined text-sm">video_library</span>
+              <span>Repositorio Audiovisual</span>
+            </div>
+            <h1 class="text-3xl md:text-4xl font-extrabold text-white tracking-tight">
+              Videoteca de Formación Continua
+            </h1>
+            <p class="text-sm md:text-base text-white/80 mt-2 max-w-2xl leading-relaxed">
+              Explorá todas las conferencias, jornadas notariales y disertaciones magistrales. Filtrá por disertante, fecha o materia de especialidad.
+            </p>
+          </div>
+
+          <div class="shrink-0 bg-white/10 backdrop-blur-xs border border-white/20 px-4 py-2.5 rounded-2xl text-xs text-white">
+            <span class="font-bold text-lg text-white block">
+              {{ portalService.filteredVideos().length }}
+            </span>
+            <span class="text-white/70">Conferencias disponibles</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Filters Section (Fixed in place, not following scroll) -->
+    <section class="py-6 bg-white border-b border-[#CBD5E1] shadow-xs">
+      <div class="max-w-[1280px] mx-auto px-4 md:px-8">
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 items-center">
+          
+          <!-- Text Search Filter -->
+          <div class="relative">
+            <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-lg">
+              search
+            </span>
+            <input
+              type="text"
+              [value]="portalService.videoCatalogSearch()"
+              (input)="onSearchChange($event)"
+              placeholder="Buscar por tema o disertante..."
+              class="w-full pl-9 pr-3 py-2 text-xs md:text-sm bg-[#F8FAFC] border border-[#CBD5E1] rounded-xl focus:ring-2 focus:ring-[#1A3673]/20 focus:border-[#1A3673] transition-all"
+            />
+          </div>
+
+          <!-- Author Filter -->
+          <div>
+            <select
+              [value]="portalService.filterVideoAuthor()"
+              (change)="onAuthorChange($event)"
+              class="w-full px-3 py-2 text-xs md:text-sm bg-[#F8FAFC] border border-[#CBD5E1] rounded-xl focus:ring-2 focus:ring-[#1A3673]/20 focus:border-[#1A3673] transition-all text-[#1A3673] font-medium"
+            >
+              <option value="todos">Todos los autores / disertantes</option>
+              @for (author of portalService.availableVideoAuthors(); track author) {
+                <option [value]="author">{{ author }}</option>
+              }
+            </select>
+          </div>
+
+          <!-- Year / Date Filter -->
+          <div>
+            <select
+              [value]="portalService.filterVideoYear()"
+              (change)="onYearChange($event)"
+              class="w-full px-3 py-2 text-xs md:text-sm bg-[#F8FAFC] border border-[#CBD5E1] rounded-xl focus:ring-2 focus:ring-[#1A3673]/20 focus:border-[#1A3673] transition-all text-[#1A3673] font-medium"
+            >
+              <option value="todos">Todos los años</option>
+              @for (year of portalService.availableVideoYears(); track year) {
+                <option [value]="year">Año {{ year }}</option>
+              }
+            </select>
+          </div>
+
+          <!-- Category Filter & Reset -->
+          <div class="flex items-center gap-2">
+            <select
+              [value]="portalService.filterVideoCategory()"
+              (change)="onCategoryChange($event)"
+              class="w-full px-3 py-2 text-xs md:text-sm bg-[#F8FAFC] border border-[#CBD5E1] rounded-xl focus:ring-2 focus:ring-[#1A3673]/20 focus:border-[#1A3673] transition-all text-[#1A3673] font-medium"
+            >
+              <option value="todos">Todas las categorías</option>
+              @for (cat of portalService.availableVideoCategories(); track cat) {
+                <option [value]="cat">{{ cat }}</option>
+              }
+            </select>
+
+            <button
+              type="button"
+              (click)="onResetFilters()"
+              class="px-3 py-2 bg-gray-100 hover:bg-gray-200 text-[#4A5568] hover:text-[#7A1C30] rounded-xl text-xs font-semibold shrink-0 transition-colors cursor-pointer border border-[#CBD5E1]"
+              title="Restablecer filtros"
+            >
+              <span class="material-symbols-outlined text-base">restart_alt</span>
+            </button>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- Videos Grid Section -->
+    <section class="py-10 max-w-[1280px] mx-auto px-4 md:px-8">
+      
+      @if (portalService.filteredVideos().length === 0) {
+        <div class="bg-white rounded-3xl p-12 text-center border border-[#CBD5E1] shadow-xs max-w-lg mx-auto">
+          <div class="w-14 h-14 rounded-2xl bg-[#FDF2F4] text-[#7A1C30] flex items-center justify-center mx-auto mb-4">
+            <span class="material-symbols-outlined text-3xl">videocam_off</span>
+          </div>
+          <h3 class="text-base font-bold text-[#1A3673] mb-1">No se encontraron conferencias</h3>
+          <p class="text-xs text-[#4A5568] mb-6">
+            Probá ajustando o quitando los filtros de búsqueda seleccionados.
+          </p>
+          <button
+            type="button"
+            (click)="onResetFilters()"
+            class="px-5 py-2.5 bg-[#1A3673] hover:bg-[#122856] text-white text-xs font-bold rounded-xl transition-colors cursor-pointer"
+          >
+            Ver todas las conferencias
+          </button>
+        </div>
+      } @else {
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          @for (video of paginatedVideos(); track video.id) {
+            <article class="bg-white rounded-2xl overflow-hidden border border-[#CBD5E1] shadow-xs hover:shadow-xl transition-all duration-300 flex flex-col group">
+              
+              <!-- Thumbnail with Play Hover -->
+              <button
+                type="button"
+                (click)="onPlayVideo(video)"
+                class="relative aspect-[16/9] w-full overflow-hidden bg-black text-left cursor-pointer p-0 border-0"
+              >
+                <img
+                  [src]="video.thumbnailUrl"
+                  [alt]="video.title"
+                  class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 opacity-90 group-hover:opacity-100"
+                  loading="lazy"
+                />
+                
+                <!-- Play Button Overlay -->
+                <div class="absolute inset-0 bg-black/30 flex items-center justify-center group-hover:bg-black/40 transition-colors">
+                  <div class="w-12 h-12 rounded-full bg-[#7A1C30] text-white flex items-center justify-center shadow-lg transform group-hover:scale-110 transition-transform">
+                    <span class="material-symbols-outlined text-3xl filled">play_arrow</span>
+                  </div>
+                </div>
+
+                <!-- Duration Badge -->
+                <span class="absolute bottom-2.5 right-2.5 bg-black/75 text-white text-[10px] font-bold px-2 py-0.5 rounded backdrop-blur-xs">
+                  {{ video.duration }}
+                </span>
+
+                <!-- Category Badge -->
+                <span class="absolute top-2.5 left-2.5 bg-[#7A1C30] text-white text-[10px] font-extrabold uppercase px-2.5 py-0.5 rounded-md shadow-sm">
+                  {{ video.category }}
+                </span>
+              </button>
+
+              <!-- Content Information -->
+              <div class="p-5 flex flex-col flex-grow justify-between">
+                <div>
+                  <div class="flex items-center gap-2 text-[11px] text-[#64748B] mb-2 font-medium">
+                    <span class="flex items-center gap-1">
+                      <span class="material-symbols-outlined text-xs">calendar_today</span>
+                      {{ video.date }}
+                    </span>
+                    <span>•</span>
+                    <span>{{ video.views || 'Destacado' }}</span>
+                  </div>
+
+                  <a [routerLink]="['/video', video.id]" class="block cursor-pointer">
+                    <h3 class="font-bold text-sm md:text-base text-[#1A3673] leading-snug mb-2 group-hover:text-[#7A1C30] transition-colors">
+                      {{ video.title }}
+                    </h3>
+                  </a>
+
+                  <p class="text-xs text-[#4A5568] line-clamp-2 leading-relaxed mb-4">
+                    {{ video.description }}
+                  </p>
+                </div>
+
+                <div class="pt-3 border-t border-gray-100 flex items-center justify-between">
+                  <span class="text-xs font-semibold text-[#1A3673] flex items-center gap-1 truncate mr-2">
+                    <span class="material-symbols-outlined text-sm text-[#7A1C30]">person</span>
+                    {{ video.author }}
+                  </span>
+
+                  <a
+                    [routerLink]="['/video', video.id]"
+                    class="px-3 py-1.5 bg-[#EEF3FA] hover:bg-[#7A1C30] text-[#1A3673] hover:text-white rounded-lg text-xs font-bold transition-colors cursor-pointer shrink-0 inline-block"
+                  >
+                    Ver detalles
+                  </a>
+                </div>
+
+              </div>
+
+            </article>
+          }
+        </div>
+
+        <!-- Pagination Controls -->
+        @if (totalPages() > 1) {
+          <nav class="mt-12 flex flex-col sm:flex-row items-center justify-between gap-4 border-t border-slate-200 pt-6" aria-label="Paginación">
+            <p class="text-xs text-slate-500">
+              Página <span class="font-bold text-[#1A3673]">{{ currentPage() }}</span> de <span class="font-bold text-[#1A3673]">{{ totalPages() }}</span> · Mostrando {{ paginatedVideos().length }} de {{ portalService.filteredVideos().length }} videos
+            </p>
+
+            <div class="flex items-center gap-2">
+              <button
+                type="button"
+                (click)="prevPage()"
+                [disabled]="currentPage() === 1"
+                [class.opacity-40]="currentPage() === 1"
+                [class.cursor-not-allowed]="currentPage() === 1"
+                class="px-3 py-1.5 border border-slate-200 bg-white hover:bg-slate-50 text-slate-700 rounded-lg text-xs font-semibold transition-colors flex items-center gap-1 cursor-pointer"
+              >
+                <span class="material-symbols-outlined text-sm">chevron_left</span>
+                <span>Anterior</span>
+              </button>
+
+              <div class="flex items-center gap-1">
+                @for (p of pagesArray(); track p) {
+                  <button
+                    type="button"
+                    (click)="goToPage(p)"
+                    [class.bg-[#1A3673]]="currentPage() === p"
+                    [class.text-white]="currentPage() === p"
+                    [class.bg-white]="currentPage() !== p"
+                    [class.text-slate-700]="currentPage() !== p"
+                    class="w-8 h-8 rounded-lg text-xs font-bold border border-slate-200 hover:bg-slate-100 transition-colors flex items-center justify-center cursor-pointer"
+                  >
+                    {{ p }}
+                  </button>
+                }
+              </div>
+
+              <button
+                type="button"
+                (click)="nextPage()"
+                [disabled]="currentPage() === totalPages()"
+                [class.opacity-40]="currentPage() === totalPages()"
+                [class.cursor-not-allowed]="currentPage() === totalPages()"
+                class="px-3 py-1.5 border border-slate-200 bg-white hover:bg-slate-50 text-slate-700 rounded-lg text-xs font-semibold transition-colors flex items-center gap-1 cursor-pointer"
+              >
+                <span>Siguiente</span>
+                <span class="material-symbols-outlined text-sm">chevron_right</span>
+              </button>
+            </div>
+          </nav>
+        }
+      }
+
+    </section>
+  </main>
+
+  <!-- Video Play Modal -->
+  @if (portalService.selectedReel(); as video) {
+    <div
+      role="dialog"
+      aria-modal="true"
+      tabindex="0"
+      (keyup.escape)="onCloseModal()"
+      class="fixed inset-0 z-50 bg-black/85 backdrop-blur-md flex items-center justify-center p-3 sm:p-6 text-white"
+    >
+      <button
+        type="button"
+        class="fixed inset-0 w-full h-full bg-transparent border-0 p-0 cursor-default"
+        (click)="onCloseModal()"
+        aria-label="Cerrar video"
+      ></button>
+
+      <div class="relative z-10 bg-[#0D1C3C] rounded-2xl shadow-2xl max-w-4xl w-full overflow-hidden border border-white/20 flex flex-col">
+        
+        <div class="px-5 py-3.5 bg-[#1A3673] text-white flex justify-between items-center border-b border-white/10">
+          <div class="flex items-center gap-2.5 truncate mr-4">
+            <span class="inline-block w-2.5 h-2.5 rounded-full bg-[#7A1C30]"></span>
+            <span class="text-xs font-bold uppercase tracking-wider text-[#FDF2F4]">{{ video.category }}</span>
+            <span class="text-white/40">|</span>
+            <h3 class="font-bold text-xs sm:text-sm truncate">{{ video.title }}</h3>
+          </div>
+          <button
+            type="button"
+            (click)="onCloseModal()"
+            class="p-1.5 rounded-lg hover:bg-white/20 text-white/80 hover:text-white transition-colors cursor-pointer"
+            aria-label="Cerrar"
+          >
+            <span class="material-symbols-outlined text-xl">close</span>
+          </button>
+        </div>
+
+        <div class="aspect-video w-full bg-black relative">
+          @if (activeSafeVideoUrl()) {
+            <iframe
+              [src]="activeSafeVideoUrl()"
+              class="w-full h-full"
+              [title]="video.title"
+              frameborder="0"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              allowfullscreen
+            ></iframe>
+          }
+        </div>
+
+        <div class="p-5 sm:p-6 bg-[#0D1C3C] border-t border-white/10 flex flex-col md:flex-row md:items-center justify-between gap-4">
+          <div class="space-y-1">
+            <div class="flex flex-wrap items-center gap-2 text-xs text-white/70">
+              <span class="flex items-center gap-1 font-semibold text-white">
+                <span class="material-symbols-outlined text-sm text-[#7A1C30]">person</span>
+                {{ video.author }}
+              </span>
+              <span>•</span>
+              <span>{{ video.date }}</span>
+              <span>•</span>
+              <span>{{ video.duration }}</span>
+            </div>
+            <p class="text-xs text-white/80 pt-1 leading-relaxed max-w-2xl">
+              {{ video.description }}
+            </p>
+          </div>
+          <button
+            type="button"
+            (click)="onCloseModal()"
+            class="px-5 py-2 bg-[#7A1C30] hover:bg-[#5C1222] text-white text-xs font-bold rounded-xl transition-colors cursor-pointer self-end md:self-auto"
+          >
+            Cerrar reproductor
+          </button>
+        </div>
+
+      </div>
+    </div>
+  }
+
+  <app-footer />
+</div>

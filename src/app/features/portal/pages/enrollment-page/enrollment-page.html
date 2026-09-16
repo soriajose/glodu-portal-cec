@@ -1,0 +1,127 @@
+<div class="min-h-screen flex flex-col bg-[#F8FAFC]">
+  <app-header />
+
+  <main class="flex-grow max-w-[1000px] mx-auto px-4 md:px-8 py-10 w-full">
+    @if (course(); as c) {
+      
+      <!-- Go back link -->
+      <a [routerLink]="['/curso', c.id]" class="inline-flex items-center gap-2 text-sm font-bold text-[#1A3673] hover:text-[#7A1C30] transition-colors mb-8">
+        <span class="material-symbols-outlined text-[18px]">arrow_back</span>
+        Volver al curso
+      </a>
+
+      @if (enrolledSuccess()) {
+        <div class="bg-white rounded-3xl p-10 text-center shadow-xl border border-slate-200 max-w-2xl mx-auto">
+          <div class="w-20 h-20 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center mx-auto mb-6">
+            <span class="material-symbols-outlined text-4xl">check_circle</span>
+          </div>
+          <h2 class="text-3xl font-black text-[#0D1C3C] mb-4">¡Inscripción Exitosa!</h2>
+          <p class="text-slate-600 mb-8 leading-relaxed">
+            Hemos recibido tus datos correctamente para el curso <strong>"{{ c.title }}"</strong>. Te enviamos un correo electrónico con los pasos a seguir para acceder al Aula Virtual.
+          </p>
+          <a routerLink="/portal" class="inline-flex py-3 px-8 bg-[#1A3673] hover:bg-[#0D1C3C] text-white font-bold rounded-xl transition-colors">
+            Volver al Portal
+          </a>
+        </div>
+      } @else {
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 items-start">
+          
+          <!-- Left: Summary -->
+          <div class="space-y-6 order-2 md:order-1">
+            <div>
+              <h2 class="text-sm font-bold text-slate-400 uppercase tracking-wider mb-2">Resumen de Inscripción</h2>
+              <h1 class="text-2xl font-bold text-[#0D1C3C] leading-tight mb-4">{{ c.title }}</h1>
+            </div>
+
+            <div class="aspect-video rounded-xl overflow-hidden shadow-sm relative mb-6">
+              <img [src]="c.imageUrl" class="w-full h-full object-cover" />
+            </div>
+
+            <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm space-y-4">
+              <div class="flex justify-between items-center pb-4 border-b border-slate-100">
+                <span class="text-sm text-slate-500 font-medium">Modalidad</span>
+                <span class="text-sm font-bold text-[#0D1C3C]">{{ c.modalities || c.modality }}</span>
+              </div>
+              <div class="flex justify-between items-center pb-4 border-b border-slate-100">
+                <span class="text-sm text-slate-500 font-medium">Inversión General</span>
+                <span class="text-sm font-bold text-[#0D1C3C]">{{ c.price || 'Sin cargo' }}</span>
+              </div>
+              @if (c.memberPrice) {
+                <div class="flex justify-between items-center">
+                  <span class="text-sm text-[#1A3673] font-bold">Arancel Colegiados</span>
+                  <span class="text-lg font-black text-[#7A1C30]">{{ c.memberPrice }}</span>
+                </div>
+              }
+            </div>
+
+            <div class="p-4 bg-blue-50 border border-blue-100 rounded-xl flex items-start gap-3">
+              <span class="material-symbols-outlined text-blue-600 mt-0.5">info</span>
+              <p class="text-xs text-blue-800 leading-relaxed">
+                Si sos notario colegiado o adscripto, recordá ingresar tu número de matrícula para acceder a las bonificaciones exclusivas automáticamente.
+              </p>
+            </div>
+          </div>
+
+          <!-- Right: Form -->
+          <div class="bg-white p-6 md:p-8 rounded-3xl shadow-xl border border-slate-200 order-1 md:order-2">
+            <h3 class="text-xl font-bold text-[#0D1C3C] mb-6">Completá tus datos</h3>
+            
+            <form (submit)="onSubmit($event)" class="space-y-5">
+              <div class="grid grid-cols-2 gap-4">
+                <div class="space-y-1.5">
+                  <label class="text-xs font-bold text-slate-700">Nombre</label>
+                  <input type="text" required class="w-full px-4 py-2.5 rounded-xl border border-slate-300 focus:border-[#1A3673] focus:ring-1 focus:ring-[#1A3673] outline-none text-sm transition-all bg-slate-50 focus:bg-white" placeholder="Ej. Juan">
+                </div>
+                <div class="space-y-1.5">
+                  <label class="text-xs font-bold text-slate-700">Apellido</label>
+                  <input type="text" required class="w-full px-4 py-2.5 rounded-xl border border-slate-300 focus:border-[#1A3673] focus:ring-1 focus:ring-[#1A3673] outline-none text-sm transition-all bg-slate-50 focus:bg-white" placeholder="Ej. Pérez">
+                </div>
+              </div>
+
+              <div class="space-y-1.5">
+                <label class="text-xs font-bold text-slate-700">Correo Electrónico</label>
+                <input type="email" required class="w-full px-4 py-2.5 rounded-xl border border-slate-300 focus:border-[#1A3673] focus:ring-1 focus:ring-[#1A3673] outline-none text-sm transition-all bg-slate-50 focus:bg-white" placeholder="juan@ejemplo.com">
+              </div>
+
+              <div class="space-y-1.5">
+                <label class="text-xs font-bold text-slate-700">DNI / Pasaporte</label>
+                <input type="text" required class="w-full px-4 py-2.5 rounded-xl border border-slate-300 focus:border-[#1A3673] focus:ring-1 focus:ring-[#1A3673] outline-none text-sm transition-all bg-slate-50 focus:bg-white" placeholder="Sin puntos ni espacios">
+              </div>
+
+              <div class="space-y-1.5">
+                <label class="text-xs font-bold text-slate-700">Condición</label>
+                <select class="w-full px-4 py-2.5 rounded-xl border border-slate-300 focus:border-[#1A3673] focus:ring-1 focus:ring-[#1A3673] outline-none text-sm transition-all bg-slate-50 focus:bg-white">
+                  <option value="">Seleccionar condición...</option>
+                  <option value="colegiado">Notario Colegiado / Adscripto (Córdoba)</option>
+                  <option value="abogado">Abogado Matriculado</option>
+                  <option value="estudiante">Estudiante</option>
+                  <option value="publico">Público General</option>
+                </select>
+              </div>
+
+              <div class="space-y-1.5">
+                <label class="text-xs font-bold text-slate-700">Matrícula (Opcional)</label>
+                <input type="text" class="w-full px-4 py-2.5 rounded-xl border border-slate-300 focus:border-[#1A3673] focus:ring-1 focus:ring-[#1A3673] outline-none text-sm transition-all bg-slate-50 focus:bg-white" placeholder="N° de matrícula">
+              </div>
+
+              <div class="pt-4 mt-4 border-t border-slate-100">
+                <button type="submit" class="w-full py-3.5 px-4 bg-[#1A3673] hover:bg-[#0D1C3C] text-white text-sm font-bold rounded-xl shadow-md hover:shadow-lg transition-all flex items-center justify-center gap-2">
+                  Confirmar Inscripción
+                  <span class="material-symbols-outlined text-[18px]">arrow_forward</span>
+                </button>
+              </div>
+            </form>
+
+          </div>
+        </div>
+      }
+    } @else {
+      <div class="text-center py-20">
+        <h2 class="text-2xl font-bold text-[#0D1C3C]">Curso no encontrado</h2>
+        <a routerLink="/portal" class="text-[#1A3673] underline mt-4 inline-block">Volver al inicio</a>
+      </div>
+    }
+  </main>
+
+  <app-footer />
+</div>

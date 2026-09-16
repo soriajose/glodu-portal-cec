@@ -1,0 +1,72 @@
+<div class="relative aspect-video w-full bg-black rounded-2xl overflow-hidden shadow-xl border border-[#c5c6d3] group my-4">
+      
+      <!-- Video Thumbnail -->
+      <img
+        [src]="thumbnailUrl()"
+        [alt]="videoTitle()"
+        class="w-full h-full object-cover opacity-85 group-hover:opacity-95 group-hover:scale-102 transition-all duration-500"
+      />
+
+      <!-- Play Button Overlay -->
+      <div class="absolute inset-0 flex items-center justify-center bg-black/30">
+        <button
+          type="button"
+          (click)="isPlaying.set(true)"
+          class="w-20 h-20 bg-[#2F4997]/90 hover:bg-[#2F4997] text-white rounded-full flex items-center justify-center shadow-2xl hover:scale-110 active:scale-95 transition-all cursor-pointer"
+          title="Reproducir Sesión"
+        >
+          <span class="material-symbols-outlined text-5xl filled ml-1">play_arrow</span>
+        </button>
+      </div>
+
+      <!-- Bottom Overlay Banner -->
+      <div class="absolute bottom-0 left-0 right-0 p-4 md:p-6 bg-gradient-to-t from-black/90 via-black/50 to-transparent">
+        <div class="flex items-center gap-2 text-[#D4AF37] text-xs font-bold uppercase tracking-wider mb-1">
+          <span class="w-2 h-2 rounded-full bg-[#D4AF37] animate-ping"></span>
+          Grabación Oficial
+        </div>
+        <p class="text-white font-bold text-sm md:text-base tracking-wide">
+          {{ videoTitle() }}
+        </p>
+      </div>
+
+      <!-- Full Video Player Modal -->
+      @if (isPlaying()) {
+        <div
+          role="dialog"
+          aria-modal="true"
+          tabindex="0"
+          (keyup.escape)="isPlaying.set(false)"
+          class="fixed inset-0 z-50 bg-black/90 backdrop-blur-md flex items-center justify-center p-4 text-white"
+        >
+          <button
+            type="button"
+            class="fixed inset-0 w-full h-full bg-transparent border-0 p-0 cursor-default"
+            (click)="isPlaying.set(false)"
+            aria-label="Cerrar reproductor"
+          ></button>
+          <div class="relative z-10 bg-black rounded-2xl shadow-2xl max-w-5xl w-full overflow-hidden border border-white/20">
+            <div class="p-4 bg-[#2F4997] text-white flex justify-between items-center">
+              <div class="flex items-center gap-2">
+                <span class="material-symbols-outlined text-xl">play_circle</span>
+                <h3 class="font-bold text-sm md:text-base truncate">{{ videoTitle() }}</h3>
+              </div>
+              <button type="button" (click)="isPlaying.set(false)" class="p-1 rounded-lg hover:bg-white/20 text-white cursor-pointer">
+                <span class="material-symbols-outlined text-2xl">close</span>
+              </button>
+            </div>
+            
+            <div class="aspect-video w-full bg-black">
+              <iframe
+                class="w-full h-full"
+                [src]="videoUrl()"
+                title="Reproductor de Video Evento"
+                frameborder="0"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowfullscreen
+              ></iframe>
+            </div>
+          </div>
+        </div>
+      }
+    </div>

@@ -1,0 +1,279 @@
+<div class="min-h-screen flex flex-col bg-[#F8FAFC]">
+  <app-header />
+
+  <main class="flex-grow">
+    <!-- Hero Section -->
+    <section class="bg-gradient-to-r from-[#0D1C3C] via-[#122856] to-[#1A3673] text-white py-12 px-4 md:px-8 border-b border-white/10">
+      <div class="max-w-[1240px] mx-auto">
+        <!-- Breadcrumb -->
+        <nav class="flex items-center gap-2 text-xs text-white/70 mb-4">
+          <a routerLink="/portal" class="hover:text-white transition-colors flex items-center gap-1">
+            <span class="material-symbols-outlined text-sm">home</span>
+            Inicio
+          </a>
+          <span class="text-white/40">/</span>
+          <span class="text-white font-medium">Habilidades Tecnológicas</span>
+        </nav>
+
+        <div class="max-w-3xl">
+          <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider bg-[#7A1C30] text-white mb-3 shadow-sm">
+            <span class="material-symbols-outlined text-sm">memory</span>
+            Comisión de Nuevas Tecnologías
+          </div>
+          <h1 class="text-3xl md:text-4xl font-extrabold tracking-tight mb-3">
+            Capacitaciones en Tecnología Notarial
+          </h1>
+          <p class="text-white/80 text-sm md:text-base leading-relaxed">
+            Programas intensivos diseñados específicamente para el notariado. Incorporá herramientas de inteligencia artificial generativa, tokenización, contratos inteligentes, biometría y firma electrónica para optimizar y asegurar tu actividad profesional.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Filters Section (Fixed in place, not following scroll) -->
+    <section class="py-6 bg-white border-b border-[#CBD5E1] shadow-xs">
+      <div class="max-w-[1240px] mx-auto px-4 md:px-8">
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 items-center">
+          
+          <!-- Text Search Filter -->
+          <div class="relative lg:col-span-1">
+            <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-lg">
+              search
+            </span>
+            <input
+              type="text"
+              [value]="portalService.techSkillSearchQuery()"
+              (input)="onSearch($event)"
+              placeholder="Buscar por curso o disertante..."
+              class="w-full pl-9 pr-3 py-2 text-xs md:text-sm bg-[#F8FAFC] border border-[#CBD5E1] rounded-xl focus:ring-2 focus:ring-[#1A3673]/20 focus:border-[#1A3673] transition-all"
+            />
+          </div>
+
+          <!-- Tag Filter -->
+          <div class="lg:col-span-1">
+            <select
+              [value]="portalService.filterTechSkillTag()"
+              (change)="onSelectTag($event)"
+              class="w-full px-3 py-2 text-xs md:text-sm bg-[#F8FAFC] border border-[#CBD5E1] rounded-xl focus:ring-2 focus:ring-[#1A3673]/20 focus:border-[#1A3673] transition-all text-[#1A3673] font-medium"
+            >
+              <option value="todos">Todos los tipos (Taller, Charla, etc.)</option>
+              @for (tag of portalService.availableTechSkillTags(); track tag) {
+                <option [value]="tag">{{ tag }}</option>
+              }
+            </select>
+          </div>
+
+          <!-- Reset -->
+          <div class="flex items-center gap-2 lg:col-span-1 justify-end">
+            <button
+              type="button"
+              (click)="onResetFilters()"
+              class="px-4 py-2 bg-gray-100 hover:bg-gray-200 text-[#4A5568] hover:text-[#7A1C30] rounded-xl text-xs font-semibold transition-colors cursor-pointer border border-[#CBD5E1] flex items-center gap-2"
+              title="Restablecer filtros"
+            >
+              <span class="material-symbols-outlined text-base">restart_alt</span>
+              Limpiar
+            </button>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- Content Grid -->
+    <section class="py-10 px-4 md:px-8">
+      <div class="max-w-[1240px] mx-auto">
+        
+        <div class="flex items-center justify-between mb-8 pb-4 border-b border-slate-200">
+          <div>
+            <h2 class="text-xl md:text-2xl font-bold text-[#0D1C3C]">
+              Talleres y Bootcamps Abiertos
+            </h2>
+            <p class="text-xs md:text-sm text-slate-500 mt-0.5">
+              Capacitaciones con cupos limitados y acceso a entornos de laboratorio práctico.
+            </p>
+          </div>
+
+          <span class="text-xs font-bold text-[#1A3673] bg-[#EEF3FA] px-3 py-1.5 rounded-lg border border-[#1A3673]/20">
+            {{ portalService.filteredTechSkills().length }} Actividades Disponibles
+          </span>
+        </div>
+
+        @if (portalService.filteredTechSkills().length === 0) {
+          <div class="bg-white rounded-3xl p-12 text-center border border-[#CBD5E1] shadow-xs max-w-lg mx-auto">
+            <div class="w-14 h-14 rounded-2xl bg-[#EEF3FA] text-[#1A3673] flex items-center justify-center mx-auto mb-4">
+              <span class="material-symbols-outlined text-3xl">event_busy</span>
+            </div>
+            <h3 class="text-base font-bold text-[#1A3673] mb-1">No se encontraron capacitaciones</h3>
+            <p class="text-xs text-[#4A5568] mb-6">
+              Probá ajustando o quitando los filtros de búsqueda seleccionados.
+            </p>
+            <button
+              type="button"
+              (click)="onResetFilters()"
+              class="px-5 py-2.5 bg-[#1A3673] hover:bg-[#122856] text-white text-xs font-bold rounded-xl transition-colors cursor-pointer"
+            >
+              Ver todas las capacitaciones
+            </button>
+          </div>
+        } @else {
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+            @for (course of paginatedTechSkills(); track course.id) {
+              <article class="bg-white rounded-2xl overflow-hidden border border-slate-200 hover:border-[#1A3673]/40 shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col sm:flex-row group">
+                
+                <!-- Image -->
+                <div class="sm:w-2/5 relative h-52 sm:h-auto overflow-hidden shrink-0 bg-slate-900">
+                  <img
+                    [src]="course.imageUrl"
+                    [alt]="course.title"
+                    loading="lazy"
+                    class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 opacity-90"
+                  />
+                  <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent"></div>
+                  
+                  <div class="absolute top-3 left-3 bg-[#7A1C30] text-white text-[10px] font-black uppercase px-2 py-0.5 rounded shadow-sm">
+                    {{ course.tag }}
+                  </div>
+                </div>
+
+                <!-- Body -->
+                <div class="p-6 sm:w-3/5 flex flex-col justify-between flex-grow">
+                  <div>
+                    <div class="flex items-center gap-1.5 text-xs text-emerald-600 font-bold mb-2">
+                      <span class="material-symbols-outlined text-sm">groups</span>
+                      <span>{{ course.spotsAvailable }} cupos disponibles</span>
+                    </div>
+
+                    <h3 class="font-bold text-[#0D1C3C] text-base md:text-lg mb-2 leading-snug group-hover:text-[#1A3673] transition-colors">
+                      {{ course.title }}
+                    </h3>
+
+                    <p class="text-xs text-slate-600 mb-4 line-clamp-3 leading-relaxed">
+                      {{ course.description }}
+                    </p>
+
+                    <!-- Meta info -->
+                    <div class="space-y-1.5 text-[11px] text-slate-500 pb-4 border-b border-slate-100 mb-4">
+                      <div class="flex items-center gap-1.5">
+                        <span class="material-symbols-outlined text-xs text-slate-400">person</span>
+                        <span class="text-slate-800 font-medium truncate">{{ course.instructor }}</span>
+                      </div>
+                      <div class="flex items-center gap-1.5">
+                        <span class="material-symbols-outlined text-xs text-slate-400">event</span>
+                        <span>{{ course.date }}</span>
+                      </div>
+                      <div class="flex items-center gap-1.5">
+                        <span class="material-symbols-outlined text-xs text-slate-400">schedule</span>
+                        <span>{{ course.duration }}</span>
+                      </div>
+                      <div class="flex items-center gap-1.5">
+                        <span class="material-symbols-outlined text-xs text-slate-400">laptop_chromebook</span>
+                        <span>{{ course.modality }}</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <a
+                    [routerLink]="['/curso', course.id]"
+                    class="w-full py-2.5 px-4 bg-[#7A1C30] hover:bg-[#5C1222] text-white text-xs font-bold rounded-xl transition-all flex items-center justify-center gap-2 cursor-pointer shadow-sm active:scale-98"
+                  >
+                    <span>Inscribirme al taller</span>
+                    <span class="material-symbols-outlined text-sm">arrow_forward</span>
+                  </a>
+                </div>
+
+              </article>
+            }
+          </div>
+
+          <!-- Pagination Controls -->
+          @if (totalPages() > 1) {
+            <nav class="mt-12 flex flex-col sm:flex-row items-center justify-between gap-4 border-t border-slate-200 pt-6" aria-label="Paginación">
+              <p class="text-xs text-slate-500">
+                Página <span class="font-bold text-[#1A3673]">{{ currentPage() }}</span> de <span class="font-bold text-[#1A3673]">{{ totalPages() }}</span> · Mostrando {{ paginatedTechSkills().length }} de {{ portalService.filteredTechSkills().length }} resultados
+              </p>
+
+              <div class="flex items-center gap-2">
+                <button
+                  type="button"
+                  (click)="prevPage()"
+                  [disabled]="currentPage() === 1"
+                  [class.opacity-40]="currentPage() === 1"
+                  [class.cursor-not-allowed]="currentPage() === 1"
+                  class="px-3 py-1.5 border border-slate-200 bg-white hover:bg-slate-50 text-slate-700 rounded-lg text-xs font-semibold transition-colors flex items-center gap-1 cursor-pointer"
+                >
+                  <span class="material-symbols-outlined text-sm">chevron_left</span>
+                  <span>Anterior</span>
+                </button>
+
+                <div class="flex items-center gap-1">
+                  @for (p of pagesArray(); track p) {
+                    <button
+                      type="button"
+                      (click)="goToPage(p)"
+                      [class.bg-[#1A3673]]="currentPage() === p"
+                      [class.text-white]="currentPage() === p"
+                      [class.bg-white]="currentPage() !== p"
+                      [class.text-slate-700]="currentPage() !== p"
+                      class="w-8 h-8 rounded-lg text-xs font-bold border border-slate-200 hover:bg-slate-100 transition-colors flex items-center justify-center cursor-pointer"
+                    >
+                      {{ p }}
+                    </button>
+                  }
+                </div>
+
+                <button
+                  type="button"
+                  (click)="nextPage()"
+                  [disabled]="currentPage() === totalPages()"
+                  [class.opacity-40]="currentPage() === totalPages()"
+                  [class.cursor-not-allowed]="currentPage() === totalPages()"
+                  class="px-3 py-1.5 border border-slate-200 bg-white hover:bg-slate-50 text-slate-700 rounded-lg text-xs font-semibold transition-colors flex items-center gap-1 cursor-pointer"
+                >
+                  <span>Siguiente</span>
+                  <span class="material-symbols-outlined text-sm">chevron_right</span>
+                </button>
+              </div>
+            </nav>
+          }
+        }
+
+        <!-- Pillar info cards -->
+        <div class="mt-16 grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div class="bg-white p-6 rounded-2xl border border-slate-200">
+            <div class="w-10 h-10 rounded-xl bg-[#EEF3FA] text-[#1A3673] flex items-center justify-center mb-4">
+              <span class="material-symbols-outlined">auto_awesome</span>
+            </div>
+            <h4 class="font-bold text-[#0D1C3C] text-sm mb-1">IA para Escribanías</h4>
+            <p class="text-xs text-slate-500 leading-relaxed">
+              Modelos de procesamiento de lenguaje orientados a la revisión y cotejo de antecedentes dominiales en milisegundos.
+            </p>
+          </div>
+
+          <div class="bg-white p-6 rounded-2xl border border-slate-200">
+            <div class="w-10 h-10 rounded-xl bg-[#EEF3FA] text-[#1A3673] flex items-center justify-center mb-4">
+              <span class="material-symbols-outlined">token</span>
+            </div>
+            <h4 class="font-bold text-[#0D1C3C] text-sm mb-1">Tokenización Inmobiliaria</h4>
+            <p class="text-xs text-slate-500 leading-relaxed">
+              Estructuras legales para fraccionamiento de activos sobre redes de confianza con resguardo de la fe pública registral.
+            </p>
+          </div>
+
+          <div class="bg-white p-6 rounded-2xl border border-slate-200">
+            <div class="w-10 h-10 rounded-xl bg-[#EEF3FA] text-[#1A3673] flex items-center justify-center mb-4">
+              <span class="material-symbols-outlined">key</span>
+            </div>
+            <h4 class="font-bold text-[#0D1C3C] text-sm mb-1">Firma Digital e Identidad</h4>
+            <p class="text-xs text-slate-500 leading-relaxed">
+              Criptografía asimétrica, validación con la Dirección de Informática Notarial y expedición de testimonios digitales.
+            </p>
+          </div>
+        </div>
+
+      </div>
+    </section>
+  </main>
+
+  <app-footer />
+</div>

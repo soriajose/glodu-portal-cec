@@ -1,0 +1,98 @@
+<section class="bg-white rounded-2xl shadow-sm border border-[#c5c6d3] overflow-hidden my-6">
+      <!-- Tab Headers -->
+      <div class="flex border-b border-[#c5c6d3] px-2 sm:px-4 bg-gray-50/50 overflow-x-auto">
+        <button
+          type="button"
+          (click)="activeTab.set('detalles')"
+          [class]="activeTab() === 'detalles' ? 'tab-active' : 'text-[#444651] hover:text-[#2F4997]'"
+          class="px-5 py-4 font-semibold text-xs sm:text-sm tracking-wide transition-all cursor-pointer whitespace-nowrap border-0"
+        >
+          Detalles
+        </button>
+
+        <button
+          type="button"
+          (click)="activeTab.set('oradores')"
+          [class]="activeTab() === 'oradores' ? 'tab-active' : 'text-[#444651] hover:text-[#2F4997]'"
+          class="px-5 py-4 font-semibold text-xs sm:text-sm tracking-wide transition-all cursor-pointer whitespace-nowrap border-0"
+        >
+          Oradores
+        </button>
+
+        <button
+          type="button"
+          (click)="activeTab.set('descarga')"
+          [class]="activeTab() === 'descarga' ? 'tab-active' : 'text-[#444651] hover:text-[#2F4997]'"
+          class="px-5 py-4 font-semibold text-xs sm:text-sm tracking-wide transition-all cursor-pointer whitespace-nowrap border-0"
+        >
+          Material de Descarga
+        </button>
+      </div>
+
+      <!-- Tab Content Body -->
+      <div class="p-6 md:p-8">
+        
+        <!-- 1. TAB DETALLES -->
+        @if (activeTab() === 'detalles') {
+          <div class="space-y-4 animate-fade-in text-sm md:text-base text-[#4A5568] leading-relaxed">
+            @for (para of detailsParagraphs(); track $index) {
+              @if (!para.startsWith('Nuevos') && !para.startsWith('El rol') && !para.startsWith('Actualización')) {
+                <p>{{ para }}</p>
+              }
+            }
+
+            <ul class="list-disc list-inside space-y-2.5 text-[#4A5568] mt-4 pt-2 border-t border-gray-100">
+              <li class="font-medium text-[#1a1c1c]">Nuevos paradigmas en la contratación digital.</li>
+              <li class="font-medium text-[#1a1c1c]">El rol del escribano como garante de fe pública en entornos virtuales.</li>
+              <li class="font-medium text-[#1a1c1c]">Actualización sobre normativa UIF y prevención de lavado.</li>
+            </ul>
+          </div>
+        }
+
+        <!-- 2. TAB ORADORES -->
+        @if (activeTab() === 'oradores') {
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4 animate-fade-in">
+            @for (speaker of speakers(); track speaker.id) {
+              <div class="flex items-center gap-4 p-4 border border-[#c5c6d3] rounded-xl hover:border-[#2F4997] transition-all bg-white shadow-2xs">
+                <div [class]="speaker.colorClass" class="w-12 h-12 rounded-full flex items-center justify-center font-bold text-base shrink-0 shadow-xs">
+                  {{ speaker.initials }}
+                </div>
+                <div>
+                  <h4 class="font-bold text-sm md:text-base text-[#2F4997]">
+                    {{ speaker.name }}
+                  </h4>
+                  <p class="text-xs text-[#4A5568]">
+                    {{ speaker.role }}
+                  </p>
+                </div>
+              </div>
+            }
+          </div>
+        }
+
+        <!-- 3. TAB MATERIAL DE DESCARGA -->
+        @if (activeTab() === 'descarga') {
+          <div class="space-y-3 animate-fade-in">
+            @for (item of downloads(); track item.id) {
+              <button
+                type="button"
+                (click)="onDownloadFile(item)"
+                class="w-full flex items-center justify-between p-4 bg-[#f3f3f3] hover:bg-[#e8e8e8] rounded-xl border border-[#c5c6d3]/60 transition-colors cursor-pointer group text-left"
+              >
+                <div class="flex items-center gap-3">
+                  <span class="material-symbols-outlined text-[#2F4997] text-2xl group-hover:scale-110 transition-transform">picture_as_pdf</span>
+                  <div>
+                    <p class="font-semibold text-xs md:text-sm text-[#1a1c1c] group-hover:text-[#2F4997] transition-colors">
+                      {{ item.title }}
+                    </p>
+                    <p class="text-[11px] text-[#4A5568]">Documento PDF - {{ item.fileSize }}</p>
+                  </div>
+                </div>
+                <span class="material-symbols-outlined text-[#757682] group-hover:text-[#2F4997] text-2xl">download</span>
+              </button>
+            }
+          </div>
+        }
+
+      </div>
+    </section>

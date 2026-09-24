@@ -13,16 +13,16 @@
         <!-- Cursos en Tendencia (Estilo Udemy) -->
         <app-courses-section [courses]="portalService.filteredCourses()" />
 
-        <!-- Aula Virtual Destacada (Card hacia pantalla explicativa) -->
-        <app-virtual-classroom-card />
-
-        <!-- Pastillas de SIDANO (Cápsulas doctrinales breves) -->
-        <app-sidano-pills />
-
         <!-- Desarrolla tus Nuevas Habilidades (Comisión de Nuevas Tecnologías) -->
         @if (portalService.hasActiveTechCourses()) {
           <app-tech-skills />
         }
+
+        <!-- Pastillas de SIDANO (Cápsulas doctrinales breves) -->
+        <app-sidano-pills />
+
+        <!-- Aula Virtual Destacada (Card hacia pantalla explicativa) -->
+        <app-virtual-classroom-card />
       </main>
 
       <!-- Footer -->
